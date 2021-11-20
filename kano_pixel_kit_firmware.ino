@@ -5,6 +5,7 @@
  *      Author: simonyu
  */
 #include "src/applications/point.h"
+#include "src/applications/restart.h"
 #include "src/buttons/buttons.h"
 #include "src/devices/esp32.h"
 #include "src/display/display.h"
@@ -15,11 +16,13 @@ using kano_pixel_kit::Display;
 using kano_pixel_kit::ESP32Platform;
 using kano_pixel_kit::Logger;
 using kano_pixel_kit::Point;
+using kano_pixel_kit::Restart;
 
 std::shared_ptr<Buttons> buttons_;
 std::shared_ptr<Display> display_;
 std::shared_ptr<Logger> logger_;
 std::shared_ptr<Point> point_;
+std::shared_ptr<Restart> restart_;
 std::shared_ptr<Buttons::States> Buttons::states_;
 
 volatile int task_barrier_;
@@ -66,11 +69,13 @@ taskCore1(void *pvParameters)
 
     waitOnBarrier();
 
-    point_->initialize(buttons_, display_, logger_);
+    point_->initialize(buttons_, display_);
+    restart_->initialize(buttons_, display_, logger_);
 
     for(;;)
     {
         point_->run();
+        restart_->run();
         vTaskDelay(10);
     }
 }
@@ -82,6 +87,7 @@ setup()
     display_ = std::make_shared<Display>();
     logger_ = std::make_shared<Logger>(&Serial);
     point_ = std::make_shared<Point>();
+    restart_ = std::make_shared<Restart>();
     Buttons::states_ = std::make_shared<Buttons::States>();
 
     task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
