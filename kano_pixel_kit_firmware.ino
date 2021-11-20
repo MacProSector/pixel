@@ -14,7 +14,6 @@
 
 using kano_pixel_kit::Buttons;
 using kano_pixel_kit::Display;
-using kano_pixel_kit::ESP32Pin;
 using kano_pixel_kit::ESP32Platform;
 using kano_pixel_kit::Logger;
 using kano_pixel_kit::NeoPixel;
@@ -62,6 +61,9 @@ taskCore1(void *pvParameters)
     Eigen::Vector3i color_buttons = Eigen::Vector3i(10, 0, 0);
     volatile int pixel_index_dial = buttons_->states_->dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
     volatile int pixel_index_buttons = 0;
+    volatile bool timer_started = false;
+    volatile unsigned long timer_start = 0;
+    volatile unsigned long timer_end = 0;
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
@@ -120,6 +122,28 @@ taskCore1(void *pvParameters)
             frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
             frame->at(++pixel_index_buttons) = color_buttons;
             display_->setFrame(*frame);
+        }
+
+        if (pushbutton_left && pushbutton_right)
+        {
+            if (!timer_started)
+            {
+                timer_start = millis();
+                timer_started = true;
+            }
+
+            timer_end = millis();
+        else
+        {
+            timer_started = false;
+            timer_start = millis();
+            timer_end = timer_start;
+        }
+
+        if (timer_end - timer_start > 5000)
+        {
+            logger_->logInfo("Restart combination triggered");
+            ESP.restart();
         }
 
         vTaskDelay(10);
