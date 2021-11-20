@@ -14,19 +14,31 @@ namespace kano_pixel_kit
 {
 Buttons::Buttons()
 {
-    setDial();
-    setJoystickUp();
-    setJoystickDown();
-    setJoystickLeft();
-    setJoystickRight();
-    setPushbuttonLeft();
-    setPushbuttonRight();
 }
 
 void
 Buttons::initialize(const std::shared_ptr<Logger> logger)
 {
     logger_ = logger;
+
+    pinMode(digitalPinToInterrupt(static_cast<int>(ESP32Pin::dial)), INPUT);
+    pinMode(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_up)), INPUT);
+    pinMode(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_down)), INPUT);
+    pinMode(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_left)), INPUT);
+    pinMode(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_right)), INPUT);
+    pinMode(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_click)), INPUT);
+    pinMode(digitalPinToInterrupt(static_cast<int>(ESP32Pin::pushbutton_left)), INPUT);
+    pinMode(digitalPinToInterrupt(static_cast<int>(ESP32Pin::pushbutton_right)), INPUT);
+
+    setDial();
+    setJoystickUp();
+    setJoystickDown();
+    setJoystickLeft();
+    setJoystickRight();
+    setJoystickClick();
+    setPushbuttonLeft();
+    setPushbuttonRight();
+
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_up)), Buttons::setJoystickUp, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_down)), Buttons::setJoystickDown, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_left)), Buttons::setJoystickLeft, CHANGE);

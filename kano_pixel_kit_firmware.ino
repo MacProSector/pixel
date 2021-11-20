@@ -14,6 +14,7 @@
 
 using kano_pixel_kit::Buttons;
 using kano_pixel_kit::Display;
+using kano_pixel_kit::ESP32Pin;
 using kano_pixel_kit::ESP32Platform;
 using kano_pixel_kit::Logger;
 using kano_pixel_kit::NeoPixel;
@@ -57,10 +58,10 @@ taskCore1(void *pvParameters)
     display_->initialize(logger_);
 
     auto frame = std::make_shared<std::vector<Eigen::Vector3i>>();
-    Eigen::Vector3i color_pushbutton = Eigen::Vector3i(10, 0, 0);
     Eigen::Vector3i color_dial = Eigen::Vector3i(10, 10, 10);
-    volatile int pixel_index_pushbutton = 0;
+    Eigen::Vector3i color_buttons = Eigen::Vector3i(10, 0, 0);
     volatile int pixel_index_dial = buttons_->states_->dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
+    volatile int pixel_index_buttons = 0;
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
@@ -68,7 +69,7 @@ taskCore1(void *pvParameters)
     }
 
     frame->at(pixel_index_dial) = color_dial;
-    frame->at(pixel_index_pushbutton) = color_pushbutton;
+    frame->at(pixel_index_buttons) = color_buttons;
     display_->setFrame(*frame);
 
     std::unique_lock<std::mutex> lock(task_barrier_mutex_);
@@ -84,30 +85,18 @@ taskCore1(void *pvParameters)
 
     for(;;)
     {
+        volatile int dial = buttons_->states_->dial;
+        volatile bool joystick_left = buttons_->states_->joystick_left;
+        volatile bool joystick_right = buttons_->states_->joystick_right;
         volatile bool pushbutton_left = buttons_->states_->pushbutton_left;
         volatile bool pushbutton_right = buttons_->states_->pushbutton_right;
-        volatile int dial = buttons_->states_->dial;
 
-        if (pushbutton_left && pixel_index_pushbutton > 0)
-        {
-            frame->at(pixel_index_pushbutton) = Eigen::Vector3i(0, 0, 0);
-            frame->at(--pixel_index_pushbutton) = color_pushbutton;
-            display_->setFrame(*frame);
-        }
-
-        if (pushbutton_right && pixel_index_pushbutton < static_cast<int>(NeoPixel::size) - 1)
-        {
-            frame->at(pixel_index_pushbutton) = Eigen::Vector3i(0, 0, 0);
-            frame->at(++pixel_index_pushbutton) = color_pushbutton;
-            display_->setFrame(*frame);
-        }
-
-        if (pixel_index_dial != pixel_index_pushbutton)
+        if (pixel_index_dial != pixel_index_buttons)
         {
             frame->at(pixel_index_dial) = Eigen::Vector3i(0, 0, 0);
             pixel_index_dial = dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
 
-            if (pixel_index_dial != pixel_index_pushbutton)
+            if (pixel_index_dial != pixel_index_buttons)
             {
                 frame->at(pixel_index_dial) = color_dial;
             }
@@ -117,6 +106,20 @@ taskCore1(void *pvParameters)
         else
         {
             pixel_index_dial = dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
+        }
+
+        if ((joystick_left || pushbutton_left) && pixel_index_buttons > 0)
+        {
+            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
+            frame->at(--pixel_index_buttons) = color_buttons;
+            display_->setFrame(*frame);
+        }
+
+        if ((joystick_right || pushbutton_right) && pixel_index_buttons < static_cast<int>(NeoPixel::size) - 1)
+        {
+            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
+            frame->at(++pixel_index_buttons) = color_buttons;
+            display_->setFrame(*frame);
         }
 
         vTaskDelay(10);
