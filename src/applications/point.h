@@ -1,11 +1,11 @@
 /*
- * buttons_test.h
+ * point.h
  *
  *  Created on: Nov 20, 2021
  *      Author: simonyu
  */
-#ifndef SRC_KANO_PIXEL_KIT_APPLICATIONS_BUTTONS_TEST_H_
-#define SRC_KANO_PIXEL_KIT_APPLICATIONS_BUTTONS_TEST_H_
+#ifndef SRC_KANO_PIXEL_KIT_APPLICATIONS_POINT_H_
+#define SRC_KANO_PIXEL_KIT_APPLICATIONS_POINT_H_
 
 #include <ArduinoEigenDense.h>
 #include <memory>
@@ -18,18 +18,18 @@ namespace kano_pixel_kit
 class Display;
 class Logger;
 
-class ButtonsTest
+class Point
 {
 public:
 
-    ButtonsTest();
+    Point();
 
     void
     initialize(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger);
 
     void
-    execute();
+    run();
 
 private:
 
@@ -52,4 +52,4 @@ private:
 };
 } // namespace kano_pixel_kit
 
-#endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_BUTTONS_TEST_H_ */
+#endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_POINT_H_ */

@@ -4,22 +4,22 @@
  *  Created on: Nov 19, 2021
  *      Author: simonyu
  */
-#include "src/applications/buttons_test.h"
+#include "src/applications/point.h"
 #include "src/buttons/buttons.h"
 #include "src/devices/esp32.h"
 #include "src/display/display.h"
 #include "src/logger/logger.h"
 
 using kano_pixel_kit::Buttons;
-using kano_pixel_kit::ButtonsTest;
 using kano_pixel_kit::Display;
 using kano_pixel_kit::ESP32Platform;
 using kano_pixel_kit::Logger;
+using kano_pixel_kit::Point;
 
 std::shared_ptr<Buttons> buttons_;
-std::shared_ptr<ButtonsTest> buttons_test_;
 std::shared_ptr<Display> display_;
 std::shared_ptr<Logger> logger_;
+std::shared_ptr<Point> point_;
 std::shared_ptr<Buttons::States> Buttons::states_;
 
 volatile int task_barrier_;
@@ -66,11 +66,11 @@ taskCore1(void *pvParameters)
 
     waitOnBarrier();
 
-    buttons_test_->initialize(buttons_, display_, logger_);
+    point_->initialize(buttons_, display_, logger_);
 
     for(;;)
     {
-        buttons_test_->execute();
+        point_->run();
         vTaskDelay(10);
     }
 }
@@ -79,9 +79,9 @@ void
 setup()
 {
     buttons_ = std::make_shared<Buttons>();
-    buttons_test_ = std::make_shared<ButtonsTest>();
     display_ = std::make_shared<Display>();
     logger_ = std::make_shared<Logger>(&Serial);
+    point_ = std::make_shared<Point>();
     Buttons::states_ = std::make_shared<Buttons::States>();
 
     task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);

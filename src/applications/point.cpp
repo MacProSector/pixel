@@ -1,5 +1,5 @@
 /*
- * buttons_test.cpp
+ * point.cpp
  *
  *  Created on: Nov 20, 2021
  *      Author: simonyu
@@ -7,7 +7,7 @@
 #include <Arduino.h>
 #include <cmath>
 
-#include "../applications/buttons_test.h"
+#include "../applications/point.h"
 #include "../devices/esp32.h"
 #include "../devices/neopixel.h"
 #include "../display/display.h"
@@ -15,7 +15,7 @@
 
 namespace kano_pixel_kit
 {
-ButtonsTest::ButtonsTest() :
+Point::Point() :
         color_dial_(Eigen::Vector3i(10, 10, 10)), color_buttons_(Eigen::Vector3i(
         10, 0, 0)), pixel_index_dial_(0), pixel_index_buttons_(0), timer_started_(
         false), timer_start_(0), timer_end_(0)
@@ -29,7 +29,7 @@ ButtonsTest::ButtonsTest() :
 }
 
 void
-ButtonsTest::initialize(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display, 
+Point::initialize(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display, 
     std::shared_ptr<Logger> logger)
 {
     buttons_ = buttons;
@@ -46,7 +46,7 @@ ButtonsTest::initialize(std::shared_ptr<Buttons> buttons, std::shared_ptr<Displa
 }
 
 void
-ButtonsTest::execute()
+Point::run()
 {
     states_ = buttons_->getStates();
 
