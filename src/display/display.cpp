@@ -19,12 +19,21 @@ Display::Display()
 }
 
 void
-Display::initialize(const std::shared_ptr<Logger> logger)
+Display::initialize(const std::shared_ptr<Logger> logger, const int& brightness_limit)
 {
     neopixel_->begin();
     logger_ = logger;
 
     clear();
+
+    if (brightness_limit >=0 && brightness_limit <= 255)
+    {
+        neopixel_->setBrightness(brightness_limit);
+    }
+    else
+    {
+        logger_->logError("Invalid brightness limit");
+    }
 }
 
 void
