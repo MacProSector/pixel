@@ -24,7 +24,8 @@ namespace kano_pixel_kit
 
     enum class ESP32Platform : int
     {
-        cpu_cores = 2
+        cpu_cores = 2,
+        analog_max = 4095
     };
 
     enum class ESP32Serial : int

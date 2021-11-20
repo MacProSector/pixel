@@ -4,6 +4,8 @@
  *  Created on: Nov 19, 2021
  *      Author: simonyu
  */
+#include <cmath>
+
 #include "src/buttons/buttons.h"
 #include "src/devices/esp32.h"
 #include "src/devices/neopixel.h"
@@ -55,16 +57,18 @@ taskCore1(void *pvParameters)
     display_->initialize(logger_);
 
     auto frame = std::make_shared<std::vector<Eigen::Vector3i>>();
-    volatile int pixel_index = 0;
-    volatile bool pushbutton_left_last = buttons_->states_->pushbutton_left;
-    volatile bool pushbutton_right_last = buttons_->states_->pushbutton_right;
+    Eigen::Vector3i color_pushbutton = Eigen::Vector3i(10, 0, 0);
+    Eigen::Vector3i color_dial = Eigen::Vector3i(10, 10, 10);
+    volatile int pixel_index_pushbutton = 0;
+    volatile int pixel_index_dial = buttons_->states_->dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
         frame->push_back(Eigen::Vector3i(0, 0, 0));
     }
 
-    frame->at(pixel_index) = Eigen::Vector3i(10, 10, 10);
+    frame->at(pixel_index_dial) = color_dial;
+    frame->at(pixel_index_pushbutton) = color_pushbutton;
     display_->setFrame(*frame);
 
     std::unique_lock<std::mutex> lock(task_barrier_mutex_);
@@ -82,29 +86,38 @@ taskCore1(void *pvParameters)
     {
         volatile bool pushbutton_left = buttons_->states_->pushbutton_left;
         volatile bool pushbutton_right = buttons_->states_->pushbutton_right;
+        volatile int dial = buttons_->states_->dial;
 
-        if (pushbutton_left && !pushbutton_left_last)
+        if (pushbutton_left && pixel_index_pushbutton > 0)
         {
-            if (pixel_index > 0)
-            {
-                frame->at(pixel_index) = Eigen::Vector3i(0, 0, 0);
-                frame->at(--pixel_index) = Eigen::Vector3i(10, 10, 10);
-                display_->setFrame(*frame);
-            }
+            frame->at(pixel_index_pushbutton) = Eigen::Vector3i(0, 0, 0);
+            frame->at(--pixel_index_pushbutton) = color_pushbutton;
+            display_->setFrame(*frame);
         }
 
-        if (pushbutton_right && !pushbutton_right_last)
+        if (pushbutton_right && pixel_index_pushbutton < static_cast<int>(NeoPixel::size) - 1)
         {
-            if (pixel_index < static_cast<int>(NeoPixel::size) - 1)
-            {
-                frame->at(pixel_index) = Eigen::Vector3i(0, 0, 0);
-                frame->at(++pixel_index) = Eigen::Vector3i(10, 10, 10);
-                display_->setFrame(*frame);
-            }
+            frame->at(pixel_index_pushbutton) = Eigen::Vector3i(0, 0, 0);
+            frame->at(++pixel_index_pushbutton) = color_pushbutton;
+            display_->setFrame(*frame);
         }
 
-        pushbutton_left_last = pushbutton_left;
-        pushbutton_right_last = pushbutton_right;
+        if (pixel_index_dial != pixel_index_pushbutton)
+        {
+            frame->at(pixel_index_dial) = Eigen::Vector3i(0, 0, 0);
+            pixel_index_dial = dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
+
+            if (pixel_index_dial != pixel_index_pushbutton)
+            {
+                frame->at(pixel_index_dial) = color_dial;
+            }
+
+            display_->setFrame(*frame);
+        }
+        else
+        {
+            pixel_index_dial = dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
+        }
 
         vTaskDelay(10);
     }
