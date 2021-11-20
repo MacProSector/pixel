@@ -37,7 +37,7 @@ Display::initialize(std::shared_ptr<Logger> logger, const int& brightness_limit)
 }
 
 void
-Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
+Display::lockAndSetFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 {
     if (frame->size() != static_cast<int>(NeoPixel::size))
     {
