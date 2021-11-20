@@ -9,6 +9,7 @@
 
 #include <ArduinoEigenDense.h>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 class Adafruit_NeoPixel;
@@ -36,6 +37,7 @@ private:
 
     std::shared_ptr<Adafruit_NeoPixel> neopixel_;
     std::shared_ptr<Logger> logger_;
+    std::mutex mutex_;
 };
 } // namespace kano_pixel_kit
 

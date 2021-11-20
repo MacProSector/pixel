@@ -45,6 +45,8 @@ Display::setFrame(const std::vector<Eigen::Vector3i> &frame)
         return;
     }
 
+    std::lock_guard<std::mutex> lock(mutex_);
+
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
         neopixel_->setPixelColor(i, neopixel_->Color(frame[i].x(), frame[i].y(), frame[i].z()));
@@ -56,6 +58,8 @@ Display::setFrame(const std::vector<Eigen::Vector3i> &frame)
 void
 Display::clear()
 {
+    std::lock_guard<std::mutex> lock(mutex_);
+
     neopixel_->clear();
     neopixel_->show();
 }

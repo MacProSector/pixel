@@ -24,6 +24,7 @@ Logger::initialize()
 void
 Logger::setLogLevel(const LogLevel &log_level)
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     log_level_ = log_level;
 }
 
@@ -32,6 +33,7 @@ Logger::logError(const std::string &log)
 {
     if (log_level_ >= LogLevel::error)
     {
+        std::lock_guard<std::mutex> lock(mutex_);
         serial_->println(("[ERROR]: " + log + ".").c_str());
     }
 }
@@ -41,6 +43,7 @@ Logger::logWarn(const std::string &log)
 {
     if (log_level_ >= LogLevel::warn)
     {
+        std::lock_guard<std::mutex> lock(mutex_);
         serial_->println(("[WARN]: " + log + ".").c_str());
     }
 }
@@ -50,6 +53,7 @@ Logger::logInfo(const std::string &log)
 {
     if (log_level_ >= LogLevel::info)
     {
+        std::lock_guard<std::mutex> lock(mutex_);
         serial_->println(("[INFO]: " + log + ".").c_str());
     }
 }
@@ -59,6 +63,7 @@ Logger::logDebug(const std::string &log)
 {
     if (log_level_ >= LogLevel::debug)
     {
+        std::lock_guard<std::mutex> lock(mutex_);
         serial_->println(("[DEBUG]: " + log + ".").c_str());
     }
 }
@@ -66,6 +71,7 @@ Logger::logDebug(const std::string &log)
 void
 Logger::newLine()
 {
+    std::lock_guard<std::mutex> lock(mutex_);
     serial_->println("");
 }
 } // namespace kano_pixel_kit

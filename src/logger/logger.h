@@ -9,6 +9,7 @@
 
 #include <HardwareSerial.h>
 #include <memory>
+#include <mutex>
 
 namespace kano_pixel_kit
 {
@@ -49,8 +50,9 @@ public:
 
 private:
 
-    LogLevel log_level_;
     HardwareSerial* serial_;
+    LogLevel log_level_;
+    std::mutex mutex_;
 };
 } // namespace kano_pixel_kit
 
