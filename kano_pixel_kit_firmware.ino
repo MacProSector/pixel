@@ -52,13 +52,19 @@ taskCore0(void *pvParameters)
 void
 taskCore1(void *pvParameters)
 {
+    display_->initialize(logger_);
+
     auto frame = std::make_shared<std::vector<Eigen::Vector3i>>();
+    volatile int pixel_index = 0;
+    volatile bool pushbutton_left_last = buttons_->states_->pushbutton_left;
+    volatile bool pushbutton_right_last = buttons_->states_->pushbutton_right;
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        frame->push_back(Eigen::Vector3i(10, 10, 10));
+        frame->push_back(Eigen::Vector3i(0, 0, 0));
     }
 
+    frame->at(pixel_index) = Eigen::Vector3i(10, 10, 10);
     display_->setFrame(*frame);
 
     std::unique_lock<std::mutex> lock(task_barrier_mutex_);
@@ -74,9 +80,32 @@ taskCore1(void *pvParameters)
 
     for(;;)
     {
-        logger_->newLine();
-        logger_->logDebug("getDial(): " + std::to_string(buttons_->states_->dial));
-        logger_->logDebug("getPushbuttonRight(): " + std::to_string(buttons_->states_->pushbutton_right));
+        volatile bool pushbutton_left = buttons_->states_->pushbutton_left;
+        volatile bool pushbutton_right = buttons_->states_->pushbutton_right;
+
+        if (pushbutton_left && !pushbutton_left_last)
+        {
+            if (pixel_index > 0)
+            {
+                frame->at(pixel_index) = Eigen::Vector3i(0, 0, 0);
+                frame->at(--pixel_index) = Eigen::Vector3i(10, 10, 10);
+                display_->setFrame(*frame);
+            }
+        }
+
+        if (pushbutton_right && !pushbutton_right_last)
+        {
+            if (pixel_index < static_cast<int>(NeoPixel::size) - 1)
+            {
+                frame->at(pixel_index) = Eigen::Vector3i(0, 0, 0);
+                frame->at(++pixel_index) = Eigen::Vector3i(10, 10, 10);
+                display_->setFrame(*frame);
+            }
+        }
+
+        pushbutton_left_last = pushbutton_left;
+        pushbutton_right_last = pushbutton_right;
+
         vTaskDelay(10);
     }
 }
@@ -89,7 +118,6 @@ setup()
     logger_ = std::make_shared<Logger>(&Serial);
 
     logger_->initialize();
-    display_->initialize(logger_);
 
     xTaskCreatePinnedToCore(taskCore0, task_name_core_0_.c_str(), 2048, NULL, 3, NULL, 0);
     xTaskCreatePinnedToCore(taskCore1, task_name_core_1_.c_str(), 2048, NULL, 3, NULL, 1);
