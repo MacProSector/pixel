@@ -23,16 +23,13 @@ std::shared_ptr<Display> display_;
 std::shared_ptr<Logger> logger_;
 std::shared_ptr<Buttons::States> Buttons::states_ = std::make_shared<Buttons::States>();
 
+const std::vector<std::string> task_names_core_ = {"Core 0",  "Core 1"};
 volatile int task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
 std::mutex task_barrier_mutex_;
-const std::string task_name_core_0_("Core 0");
-const std::string task_name_core_1_("Core 1");
 
 void
-taskCore0(void *pvParameters)
+waitOnBarrier()
 {
-    buttons_->initialize(logger_);
-
     std::unique_lock<std::mutex> lock(task_barrier_mutex_);
     task_barrier_ --;
     lock.unlock();
@@ -42,7 +39,19 @@ taskCore0(void *pvParameters)
         vTaskDelay(10);
     };
 
-    logger_->logInfo("Started task \"" + task_name_core_0_ + "\" on core " + std::to_string(xPortGetCoreID()));
+    const int task_core_index = xPortGetCoreID();
+    const auto task_name_core = task_names_core_[task_core_index];
+    const std::string task_core = std::to_string(task_core_index);
+
+    logger_->logInfo("Started task \"" + task_name_core + "\" on core " + task_core);
+}
+
+void
+taskCore0(void *pvParameters)
+{
+    buttons_->initialize(logger_);
+
+    waitOnBarrier();
 
     for(;;)
     {
@@ -74,16 +83,7 @@ taskCore1(void *pvParameters)
     frame->at(pixel_index_buttons) = color_buttons;
     display_->setFrame(*frame);
 
-    std::unique_lock<std::mutex> lock(task_barrier_mutex_);
-    task_barrier_ --;
-    lock.unlock();
-
-    while (task_barrier_)
-    {
-        vTaskDelay(10);
-    };
-
-    logger_->logInfo("Started task \"" + task_name_core_1_ + "\" on core " + std::to_string(xPortGetCoreID()));
+    waitOnBarrier();
 
     for(;;)
     {
@@ -180,8 +180,8 @@ setup()
 
     logger_->initialize();
 
-    xTaskCreatePinnedToCore(taskCore0, task_name_core_0_.c_str(), 2048, NULL, 3, NULL, 0);
-    xTaskCreatePinnedToCore(taskCore1, task_name_core_1_.c_str(), 2048, NULL, 3, NULL, 1);
+    xTaskCreatePinnedToCore(taskCore0, task_names_core_[0].c_str(), 2048, NULL, 3, NULL, 0);
+    xTaskCreatePinnedToCore(taskCore1, task_names_core_[1].c_str(), 2048, NULL, 3, NULL, 1);
 }
 
 void
