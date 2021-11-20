@@ -15,13 +15,10 @@ using kano_pixel_kit::NeoPixel;
 std::shared_ptr<Display> display_;
 std::shared_ptr<Logger> logger_;
 
-void setup()
+void
+taskCore0(void *pvParameters)
 {
-    display_ = std::make_shared<Display>();
-    logger_ = std::make_shared<Logger>(&Serial);
-
-    logger_->initialize();
-    display_->initialize(logger_);
+    logger_->logInfo("Started core 0 task");
 
     std::vector<Eigen::Vector3i> frame;
 
@@ -31,8 +28,39 @@ void setup()
     }
 
     display_->setFrame(frame);
+
+    for(;;)
+    {
+        vTaskDelay(10);
+    }
 }
 
-void loop()
+void
+taskCore1(void *pvParameters)
 {
+    logger_->logInfo("Started core 1 task");
+
+    for(;;)
+    {
+        vTaskDelay(10);
+    }
+}
+
+void
+setup()
+{
+    display_ = std::make_shared<Display>();
+    logger_ = std::make_shared<Logger>(&Serial);
+
+    logger_->initialize();
+    display_->initialize(logger_);
+
+    xTaskCreatePinnedToCore(taskCore0, "Core 0 Task", 1024, NULL, 3, NULL, 0);
+    xTaskCreatePinnedToCore(taskCore1, "Core 1 Task", 1024, NULL, 3, NULL, 1);
+}
+
+void
+loop()
+{
+    vTaskDelay(10);
 }
