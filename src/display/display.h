@@ -25,7 +25,7 @@ public:
     Display();
 
     void
-    initialize(const std::shared_ptr<Logger> logger, const int& brightness_limit = 255);
+    initialize(std::shared_ptr<Logger> logger, const int& brightness_limit = 255);
 
     void
     setFrame(const std::vector<Eigen::Vector3i> &frame);

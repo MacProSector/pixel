@@ -19,7 +19,7 @@ Display::Display()
 }
 
 void
-Display::initialize(const std::shared_ptr<Logger> logger, const int& brightness_limit)
+Display::initialize(std::shared_ptr<Logger> logger, const int& brightness_limit)
 {
     neopixel_->begin();
     logger_ = logger;

@@ -17,7 +17,7 @@ Buttons::Buttons()
 }
 
 void
-Buttons::initialize(const std::shared_ptr<Logger> logger)
+Buttons::initialize(std::shared_ptr<Logger> logger)
 {
     logger_ = logger;
 
@@ -46,6 +46,12 @@ Buttons::initialize(const std::shared_ptr<Logger> logger)
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(ESP32Pin::joystick_click)), Buttons::setJoystickClick, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(ESP32Pin::pushbutton_left)), Buttons::setPushbuttonLeft, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(ESP32Pin::pushbutton_right)), Buttons::setPushbuttonRight, CHANGE);
+}
+
+std::shared_ptr<Buttons::States>
+Buttons::getStates()
+{
+    return std::make_shared<Buttons::States>(*states_);
 }
 
 void

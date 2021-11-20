@@ -87,16 +87,12 @@ taskCore1(void *pvParameters)
 
     for(;;)
     {
-        volatile int dial = buttons_->states_->dial;
-        volatile bool joystick_left = buttons_->states_->joystick_left;
-        volatile bool joystick_right = buttons_->states_->joystick_right;
-        volatile bool pushbutton_left = buttons_->states_->pushbutton_left;
-        volatile bool pushbutton_right = buttons_->states_->pushbutton_right;
+        auto states = buttons_->getStates();
 
         if (pixel_index_dial != pixel_index_buttons)
         {
             frame->at(pixel_index_dial) = Eigen::Vector3i(0, 0, 0);
-            pixel_index_dial = dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
+            pixel_index_dial = states->dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
 
             if (pixel_index_dial != pixel_index_buttons)
             {
@@ -107,24 +103,48 @@ taskCore1(void *pvParameters)
         }
         else
         {
-            pixel_index_dial = dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
+            pixel_index_dial = states->dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
         }
 
-        if ((joystick_left || pushbutton_left) && pixel_index_buttons > 0)
+        if (states->joystick_up && pixel_index_buttons >= static_cast<int>(NeoPixel::width))
+        {
+            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
+            pixel_index_buttons -= static_cast<int>(NeoPixel::width);
+            frame->at(pixel_index_buttons) = color_buttons;
+            display_->setFrame(*frame);
+        }
+
+        if (states->joystick_down && pixel_index_buttons < static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width))
+        {
+            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
+            pixel_index_buttons += static_cast<int>(NeoPixel::width);
+            frame->at(pixel_index_buttons) = color_buttons;
+            display_->setFrame(*frame);
+        }
+
+        if ((states->joystick_left || states->pushbutton_left) && pixel_index_buttons > 0)
         {
             frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
             frame->at(--pixel_index_buttons) = color_buttons;
             display_->setFrame(*frame);
         }
 
-        if ((joystick_right || pushbutton_right) && pixel_index_buttons < static_cast<int>(NeoPixel::size) - 1)
+        if ((states->joystick_right || states->pushbutton_right) && pixel_index_buttons < static_cast<int>(NeoPixel::size) - 1)
         {
             frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
             frame->at(++pixel_index_buttons) = color_buttons;
             display_->setFrame(*frame);
         }
 
-        if (pushbutton_left && pushbutton_right)
+        if (states->joystick_click)
+        {
+            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
+            pixel_index_buttons = 0;
+            frame->at(pixel_index_buttons) = color_buttons;
+            display_->setFrame(*frame);
+        }
+
+        if (states->pushbutton_left && states->pushbutton_right)
         {
             if (!timer_started)
             {
@@ -133,6 +153,7 @@ taskCore1(void *pvParameters)
             }
 
             timer_end = millis();
+        }
         else
         {
             timer_started = false;

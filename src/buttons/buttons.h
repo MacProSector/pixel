@@ -40,7 +40,10 @@ public:
     Buttons();
 
     void
-    initialize(const std::shared_ptr<Logger> logger);
+    initialize(std::shared_ptr<Logger> logger);
+
+    std::shared_ptr<States>
+    getStates();
 
     static void
     setDial();
