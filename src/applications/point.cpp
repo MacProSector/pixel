@@ -35,7 +35,7 @@ Point::initialize(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> dis
     frame_->at(pixel_index_dial_) = color_dial_;
     frame_->at(pixel_index_buttons_) = color_buttons_;
 
-    display_->setFrame(*frame_);
+    display_->setFrame(frame_);
 }
 
 void
@@ -54,7 +54,7 @@ Point::run()
             frame_->at(pixel_index_dial_) = color_dial_;
         }
 
-        display_->setFrame(*frame_);
+        display_->setFrame(frame_);
     }
     else
     {
@@ -67,7 +67,7 @@ Point::run()
         frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
         pixel_index_buttons_ -= static_cast<int>(NeoPixel::width);
         frame_->at(pixel_index_buttons_) = color_buttons_;
-        display_->setFrame(*frame_);
+        display_->setFrame(frame_);
     }
 
     if (states_->joystick_down && pixel_index_buttons_ < static_cast<int>(
@@ -76,14 +76,14 @@ Point::run()
         frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
         pixel_index_buttons_ += static_cast<int>(NeoPixel::width);
         frame_->at(pixel_index_buttons_) = color_buttons_;
-        display_->setFrame(*frame_);
+        display_->setFrame(frame_);
     }
 
     if ((states_->joystick_left || states_->pushbutton_left) && pixel_index_buttons_ > 0)
     {
         frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
         frame_->at(--pixel_index_buttons_) = color_buttons_;
-        display_->setFrame(*frame_);
+        display_->setFrame(frame_);
     }
 
     if ((states_->joystick_right || states_->pushbutton_right) && pixel_index_buttons_ < static_cast<int>(
@@ -91,7 +91,7 @@ Point::run()
     {
         frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
         frame_->at(++pixel_index_buttons_) = color_buttons_;
-        display_->setFrame(*frame_);
+        display_->setFrame(frame_);
     }
 
     if (states_->joystick_click)
@@ -99,7 +99,7 @@ Point::run()
         frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
         pixel_index_buttons_ = 0;
         frame_->at(pixel_index_buttons_) = color_buttons_;
-        display_->setFrame(*frame_);
+        display_->setFrame(frame_);
     }
 }
 } // namespace kano_pixel_kit

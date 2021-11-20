@@ -37,9 +37,9 @@ Display::initialize(std::shared_ptr<Logger> logger, const int& brightness_limit)
 }
 
 void
-Display::setFrame(const std::vector<Eigen::Vector3i> &frame)
+Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 {
-    if (frame.size() != static_cast<int>(NeoPixel::size))
+    if (frame->size() != static_cast<int>(NeoPixel::size))
     {
         logger_->logError("Invalid frame size");
         return;
@@ -49,7 +49,7 @@ Display::setFrame(const std::vector<Eigen::Vector3i> &frame)
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        neopixel_->setPixelColor(i, neopixel_->Color(frame[i].x(), frame[i].y(), frame[i].z()));
+        neopixel_->setPixelColor(i, neopixel_->Color(frame->at(i).x(), frame->at(i).y(), frame->at(i).z()));
     }
 
     neopixel_->show();
