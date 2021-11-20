@@ -4,28 +4,27 @@
  *  Created on: Nov 19, 2021
  *      Author: simonyu
  */
-#include <cmath>
-
+#include "src/applications/buttons_test.h"
 #include "src/buttons/buttons.h"
 #include "src/devices/esp32.h"
-#include "src/devices/neopixel.h"
 #include "src/display/display.h"
 #include "src/logger/logger.h"
 
 using kano_pixel_kit::Buttons;
+using kano_pixel_kit::ButtonsTest;
 using kano_pixel_kit::Display;
 using kano_pixel_kit::ESP32Platform;
 using kano_pixel_kit::Logger;
-using kano_pixel_kit::NeoPixel;
 
 std::shared_ptr<Buttons> buttons_;
+std::shared_ptr<ButtonsTest> buttons_test_;
 std::shared_ptr<Display> display_;
 std::shared_ptr<Logger> logger_;
-std::shared_ptr<Buttons::States> Buttons::states_ = std::make_shared<Buttons::States>();
+std::shared_ptr<Buttons::States> Buttons::states_;
 
-const std::vector<std::string> task_names_core_ = {"Core 0",  "Core 1"};
-volatile int task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
+volatile int task_barrier_;
 std::mutex task_barrier_mutex_;
+std::vector<std::string> task_names_core_;
 
 void
 waitOnBarrier()
@@ -65,108 +64,13 @@ taskCore1(void *pvParameters)
 {
     display_->initialize(logger_);
 
-    auto frame = std::make_shared<std::vector<Eigen::Vector3i>>();
-    Eigen::Vector3i color_dial = Eigen::Vector3i(10, 10, 10);
-    Eigen::Vector3i color_buttons = Eigen::Vector3i(10, 0, 0);
-    volatile int pixel_index_dial = buttons_->states_->dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
-    volatile int pixel_index_buttons = 0;
-    volatile bool timer_started = false;
-    volatile unsigned long timer_start = 0;
-    volatile unsigned long timer_end = 0;
-
-    for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
-    {
-        frame->push_back(Eigen::Vector3i(0, 0, 0));
-    }
-
-    frame->at(pixel_index_dial) = color_dial;
-    frame->at(pixel_index_buttons) = color_buttons;
-    display_->setFrame(*frame);
-
     waitOnBarrier();
+
+    buttons_test_->initialize(buttons_, display_, logger_);
 
     for(;;)
     {
-        auto states = buttons_->getStates();
-
-        if (pixel_index_dial != pixel_index_buttons)
-        {
-            frame->at(pixel_index_dial) = Eigen::Vector3i(0, 0, 0);
-            pixel_index_dial = states->dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
-
-            if (pixel_index_dial != pixel_index_buttons)
-            {
-                frame->at(pixel_index_dial) = color_dial;
-            }
-
-            display_->setFrame(*frame);
-        }
-        else
-        {
-            pixel_index_dial = states->dial / static_cast<float>(ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
-        }
-
-        if (states->joystick_up && pixel_index_buttons >= static_cast<int>(NeoPixel::width))
-        {
-            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
-            pixel_index_buttons -= static_cast<int>(NeoPixel::width);
-            frame->at(pixel_index_buttons) = color_buttons;
-            display_->setFrame(*frame);
-        }
-
-        if (states->joystick_down && pixel_index_buttons < static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width))
-        {
-            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
-            pixel_index_buttons += static_cast<int>(NeoPixel::width);
-            frame->at(pixel_index_buttons) = color_buttons;
-            display_->setFrame(*frame);
-        }
-
-        if ((states->joystick_left || states->pushbutton_left) && pixel_index_buttons > 0)
-        {
-            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
-            frame->at(--pixel_index_buttons) = color_buttons;
-            display_->setFrame(*frame);
-        }
-
-        if ((states->joystick_right || states->pushbutton_right) && pixel_index_buttons < static_cast<int>(NeoPixel::size) - 1)
-        {
-            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
-            frame->at(++pixel_index_buttons) = color_buttons;
-            display_->setFrame(*frame);
-        }
-
-        if (states->joystick_click)
-        {
-            frame->at(pixel_index_buttons) = Eigen::Vector3i(0, 0, 0);
-            pixel_index_buttons = 0;
-            frame->at(pixel_index_buttons) = color_buttons;
-            display_->setFrame(*frame);
-        }
-
-        if (states->pushbutton_left && states->pushbutton_right)
-        {
-            if (!timer_started)
-            {
-                timer_start = millis();
-                timer_started = true;
-            }
-
-            timer_end = millis();
-        }
-        else
-        {
-            timer_started = false;
-            timer_start = millis();
-            timer_end = timer_start;
-        }
-
-        if (timer_end - timer_start > 5000)
-        {
-            logger_->logInfo("Restart combination triggered");
-            ESP.restart();
-        }
-
+        buttons_test_->execute();
         vTaskDelay(10);
     }
 }
@@ -175,8 +79,13 @@ void
 setup()
 {
     buttons_ = std::make_shared<Buttons>();
+    buttons_test_ = std::make_shared<ButtonsTest>();
     display_ = std::make_shared<Display>();
     logger_ = std::make_shared<Logger>(&Serial);
+    Buttons::states_ = std::make_shared<Buttons::States>();
+
+    task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
+    task_names_core_ = {"Core 0",  "Core 1"};
 
     logger_->initialize();
 

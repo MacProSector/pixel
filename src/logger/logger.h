@@ -51,6 +51,7 @@ public:
 private:
 
     HardwareSerial* serial_;
+
     LogLevel log_level_;
     std::mutex mutex_;
 };
