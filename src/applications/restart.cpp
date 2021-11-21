@@ -8,6 +8,7 @@
 
 #include "../applications/restart.h"
 #include "../devices/neopixel.h"
+#include "../display/display.h"
 #include "../logger/logger.h"
 
 namespace kano_pixel_kit
@@ -59,7 +60,23 @@ Restart::run()
     if (timer_end_ - timer_start_ > 5000)
     {
         logger_->logInfo("Restarting..");
+        displayRestartScreen();
         ESP.restart();
+    }
+}
+
+void
+Restart::displayRestartScreen()
+{
+    while (!display_->lock());
+
+    display_->setFrame(frame_);
+    timer_start_ = millis();
+    timer_end_ = timer_start_;
+
+    while (timer_end_ - timer_start_ < 500)
+    {
+        timer_end_ = millis();
     }
 }
 } // namespace kano_pixel_kit

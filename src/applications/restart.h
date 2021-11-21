@@ -33,6 +33,9 @@ public:
 
 private:
 
+    void
+    displayRestartScreen();
+
     std::shared_ptr<Buttons> buttons_;
     std::shared_ptr<Display> display_;
     std::shared_ptr<Logger> logger_;

@@ -37,10 +37,10 @@ Display::initialize(std::shared_ptr<Logger> logger, const int& brightness_limit)
     }
 }
 
-void
+bool
 Display::lock()
 {
-    lock_.lock();
+    return lock_.try_lock();
 }
 
 void
@@ -66,12 +66,18 @@ Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
     neopixel_->show();
 }
 
-void
+bool
 Display::setFrameAtomic(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 {
-    lock();
+    if (!lock())
+    {
+        return false;
+    }
+
     setFrame(frame);
     unlock();
+
+    return true;
 }
 
 void
