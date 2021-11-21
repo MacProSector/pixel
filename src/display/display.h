@@ -44,11 +44,18 @@ public:
 
 private:
 
+    void
+    displayStartScreen();
+
     std::shared_ptr<Logger> logger_;
     std::shared_ptr<Adafruit_NeoPixel> neopixel_;
 
+    std::shared_ptr<std::vector<Eigen::Vector3i>> frame_;
     std::unique_lock<std::mutex> lock_;
     std::mutex mutex_;
+
+    unsigned long timer_start_;
+    unsigned long timer_end_;
 };
 } // namespace kano_pixel_kit
 

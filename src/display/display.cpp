@@ -13,10 +13,17 @@
 
 namespace kano_pixel_kit
 {
-Display::Display() : lock_(mutex_, std::defer_lock)
+Display::Display() : lock_(mutex_, std::defer_lock), timer_start_(0), timer_end_(0)
 {
     neopixel_ = std::make_shared<Adafruit_NeoPixel>(static_cast<int>(NeoPixel::size), static_cast<int>(
             ESP32Pin::neo_pixel), NEO_GRB + NEO_KHZ800);
+
+    frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
+
+    for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
+    {
+        frame_->push_back(Eigen::Vector3i(10, 10, 10));
+    }
 }
 
 void
@@ -35,6 +42,8 @@ Display::initialize(std::shared_ptr<Logger> logger, const int& brightness_limit)
     {
         logger_->logError("Invalid brightness limit");
     }
+
+    displayStartScreen();
 }
 
 bool
@@ -86,6 +95,23 @@ Display::clear()
     lock();
     neopixel_->clear();
     neopixel_->show();
+    unlock();
+}
+
+void
+Display::displayStartScreen()
+{
+    while (!lock());
+    setFrame(frame_);
+
+    timer_start_ = millis();
+    timer_end_ = timer_start_;
+
+    while (timer_end_ - timer_start_ < 500)
+    {
+        timer_end_ = millis();
+    }
+
     unlock();
 }
 } // namespace kano_pixel_kit

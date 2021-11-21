@@ -69,8 +69,8 @@ void
 Restart::displayRestartScreen()
 {
     while (!display_->lock());
-
     display_->setFrame(frame_);
+
     timer_start_ = millis();
     timer_end_ = timer_start_;
 
