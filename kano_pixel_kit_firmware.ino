@@ -85,7 +85,7 @@ setup()
 {
     buttons_ = std::make_shared<Buttons>();
     display_ = std::make_shared<Display>();
-    logger_ = std::make_shared<Logger>(&Serial);
+    logger_ = std::make_shared<Logger>();
     point_ = std::make_shared<Point>();
     restart_ = std::make_shared<Restart>();
     Buttons::states_ = std::make_shared<Buttons::States>();

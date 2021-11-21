@@ -7,7 +7,6 @@
 #ifndef SRC_KANO_PIXEL_KIT_LOGGER_LOGGER_H_
 #define SRC_KANO_PIXEL_KIT_LOGGER_LOGGER_H_
 
-#include <HardwareSerial.h>
 #include <memory>
 #include <mutex>
 
@@ -25,7 +24,7 @@ public:
         debug
     };
 
-    Logger(HardwareSerial* serial);
+    Logger();
 
     void
     initialize();
@@ -45,12 +44,7 @@ public:
     void
     logDebug(const std::string &log);
 
-    void
-    newLine();
-
 private:
-
-    HardwareSerial* serial_;
 
     LogLevel log_level_;
     std::mutex mutex_;
