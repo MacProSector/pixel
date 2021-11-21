@@ -31,6 +31,15 @@ public:
 
 private:
 
+    void
+    processDial();
+
+    void
+    processJoystick();
+
+    void
+    processPushbutton();
+
     std::shared_ptr<Buttons> buttons_;
     std::shared_ptr<Display> display_;
 

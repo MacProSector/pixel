@@ -44,6 +44,19 @@ Point::run()
     states_ = buttons_->getStates();
     set_display_frame_ = false;
 
+    processDial();
+    processJoystick();
+    processPushbutton();
+
+    if (set_display_frame_)
+    {
+        display_->setFrameAtomic(frame_);
+    }
+}
+
+void
+Point::processDial()
+{
     if (pixel_index_dial_ != pixel_index_buttons_)
     {
         frame_->at(pixel_index_dial_) = Eigen::Vector3i(0, 0, 0);
@@ -62,7 +75,11 @@ Point::run()
         pixel_index_dial_ = states_->dial / static_cast<float>(
                 ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
     }
+}
 
+void
+Point::processJoystick()
+{
     if (states_->joystick_up && pixel_index_buttons_ >= static_cast<int>(NeoPixel::width))
     {
         frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
@@ -80,15 +97,16 @@ Point::run()
         set_display_frame_ = true;
     }
 
-    if ((states_->joystick_left || states_->pushbutton_left) && pixel_index_buttons_ > 0)
+    if (states_->joystick_left && pixel_index_buttons_ % static_cast<int>(
+            NeoPixel::width) > 0)
     {
         frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
         frame_->at(--pixel_index_buttons_) = color_buttons_;
         set_display_frame_ = true;
     }
 
-    if ((states_->joystick_right || states_->pushbutton_right) && pixel_index_buttons_ < static_cast<int>(
-            NeoPixel::size) - 1)
+    if (states_->joystick_right && pixel_index_buttons_ % static_cast<int>(
+            NeoPixel::width) < static_cast<int>(NeoPixel::width) - 1)
     {
         frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
         frame_->at(++pixel_index_buttons_) = color_buttons_;
@@ -102,10 +120,24 @@ Point::run()
         frame_->at(pixel_index_buttons_) = color_buttons_;
         set_display_frame_ = true;
     }
+}
 
-    if (set_display_frame_)
+void
+Point::processPushbutton()
+{
+    if (states_->pushbutton_left && pixel_index_buttons_ > 0)
     {
-        display_->setFrameAtomic(frame_);
+        frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
+        frame_->at(--pixel_index_buttons_) = color_buttons_;
+        set_display_frame_ = true;
+    }
+
+    if (states_->pushbutton_right && pixel_index_buttons_ < static_cast<int>(
+            NeoPixel::size) - 1)
+    {
+        frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
+        frame_->at(++pixel_index_buttons_) = color_buttons_;
+        set_display_frame_ = true;
     }
 }
 } // namespace kano_pixel_kit
