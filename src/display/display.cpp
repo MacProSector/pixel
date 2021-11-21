@@ -13,9 +13,10 @@
 
 namespace kano_pixel_kit
 {
-Display::Display()
+Display::Display() : lock_(mutex_, std::defer_lock)
 {
-    neopixel_ = std::make_shared<Adafruit_NeoPixel>(static_cast<int>(NeoPixel::size), static_cast<int>(ESP32Pin::neo_pixel), NEO_GRB + NEO_KHZ800);
+    neopixel_ = std::make_shared<Adafruit_NeoPixel>(static_cast<int>(NeoPixel::size), static_cast<int>(
+            ESP32Pin::neo_pixel), NEO_GRB + NEO_KHZ800);
 }
 
 void
@@ -37,15 +38,25 @@ Display::initialize(std::shared_ptr<Logger> logger, const int& brightness_limit)
 }
 
 void
-Display::lockAndSetFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
+Display::lock()
+{
+    lock_.lock();
+}
+
+void
+Display::unlock()
+{
+    lock_.unlock();
+}
+
+void
+Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 {
     if (frame->size() != static_cast<int>(NeoPixel::size))
     {
         logger_->logError("Invalid frame size");
         return;
     }
-
-    std::lock_guard<std::mutex> lock(mutex_);
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
@@ -56,11 +67,19 @@ Display::lockAndSetFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 }
 
 void
+Display::setFrameAtomic(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
+{
+    lock();
+    setFrame(frame);
+    unlock();
+}
+
+void
 Display::clear()
 {
-    std::lock_guard<std::mutex> lock(mutex_);
-
+    lock();
     neopixel_->clear();
     neopixel_->show();
+    unlock();
 }
 } // namespace kano_pixel_kit

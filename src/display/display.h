@@ -28,16 +28,26 @@ public:
     initialize(std::shared_ptr<Logger> logger, const int& brightness_limit = 255);
 
     void
-    lockAndSetFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame);
+    lock();
+
+    void
+    unlock();
+
+    void
+    setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame);
+
+    void
+    setFrameAtomic(std::shared_ptr<std::vector<Eigen::Vector3i>> frame);
 
     void
     clear();
 
 private:
 
-    std::shared_ptr<Adafruit_NeoPixel> neopixel_;
     std::shared_ptr<Logger> logger_;
+    std::shared_ptr<Adafruit_NeoPixel> neopixel_;
 
+    std::unique_lock<std::mutex> lock_;
     std::mutex mutex_;
 };
 } // namespace kano_pixel_kit

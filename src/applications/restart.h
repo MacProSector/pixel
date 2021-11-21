@@ -37,8 +37,8 @@ private:
     std::shared_ptr<Display> display_;
     std::shared_ptr<Logger> logger_;
 
-    std::shared_ptr<Buttons::States> states_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> frame_;
+    std::shared_ptr<Buttons::States> states_;
 
     bool timer_started_;
     unsigned long timer_start_;

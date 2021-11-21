@@ -34,14 +34,15 @@ private:
     std::shared_ptr<Buttons> buttons_;
     std::shared_ptr<Display> display_;
 
-    std::shared_ptr<Buttons::States> states_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> frame_;
+    std::shared_ptr<Buttons::States> states_;
 
     Eigen::Vector3i color_dial_;
     Eigen::Vector3i color_buttons_;
 
     int pixel_index_dial_;
     int pixel_index_buttons_;
+    bool set_display_frame_;
 };
 } // namespace kano_pixel_kit
 
