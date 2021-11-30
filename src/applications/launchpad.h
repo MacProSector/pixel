@@ -42,8 +42,9 @@ private:
     std::vector<std::shared_ptr<Application>> services_;
 
     std::shared_ptr<Application> application_;
-    bool application_launched_;
     int application_index_;
+    bool application_initialized_;
+    bool application_launched_;
     bool timer_started_;
     unsigned long timer_start_;
     unsigned long timer_end_;

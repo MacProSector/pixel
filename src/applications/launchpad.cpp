@@ -9,8 +9,9 @@
 namespace kano_pixel_kit
 {
 LaunchPad::LaunchPad(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(buttons, display, logger), application_launched_(
-        false), application_index_(0), timer_started_(false), timer_start_(0), timer_end_(0)
+        std::shared_ptr<Logger> logger) : Application(buttons, display, logger), application_index_(
+        0), application_initialized_(false), application_launched_(false), timer_started_(
+        false), timer_start_(0), timer_end_(0)
 {
 }
 
@@ -29,11 +30,6 @@ LaunchPad::addService(std::shared_ptr<Application> service)
 void
 LaunchPad::initialize()
 {
-    for (auto application : applications_)
-    {
-        application->initialize();
-    }
-
     for (auto service : services_)
     {
         service->initialize();
@@ -50,10 +46,17 @@ LaunchPad::run()
 
     if (application_launched_)
     {
+        if (!application_initialized_)
+        {
+            application_->initialize();
+            application_initialized_ = true;
+        }
+
         application_->run();
     }
     else
     {
+        application_initialized_ = false;
         display_->setFrameAtomic(applications_[application_index_]->getSplashScreen());
     }
 

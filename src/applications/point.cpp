@@ -34,6 +34,8 @@ Point::initialize()
             ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
     display_frame_->at(pixel_index_dial_) = color_dial_;
     display_frame_->at(pixel_index_buttons_) = color_buttons_;
+
+    display_->setFrameAtomic(display_frame_);
 }
 
 void
