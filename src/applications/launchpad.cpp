@@ -66,10 +66,10 @@ LaunchPad::run()
 void
 LaunchPad::processJoystick()
 {
-    static bool joystick_left_last;
-    static bool joystick_right_last;
-    static bool joystick_click_last;
-    static bool joystick_click_reset;
+    static bool joystick_left_last = false;
+    static bool joystick_right_last = false;
+    static bool joystick_click_last = true; // Require reset after restart
+    static bool joystick_click_reset = false;
 
     if (joystick_left_last &&
         !buttons_state_->joystick_left &&
@@ -130,8 +130,8 @@ LaunchPad::processJoystick()
 void
 LaunchPad::processPushbutton()
 {
-    static bool pushbutton_left_last;
-    static bool pushbutton_right_last;
+    static bool pushbutton_left_last = false;
+    static bool pushbutton_right_last = false;
 
     if (pushbutton_left_last &&
         !buttons_state_->pushbutton_left &&
