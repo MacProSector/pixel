@@ -12,7 +12,7 @@ namespace kano_pixel_kit
 {
 Point::Point(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger) : Application(buttons, display, logger), 
-        color_dial_(Eigen::Vector3i(255, 255, 255)), color_buttons_(Eigen::Vector3i(
+        color_dial_(Eigen::Vector3i(0, 0, 255)), color_buttons_(Eigen::Vector3i(
         255, 0, 0)), pixel_index_dial_(0), pixel_index_buttons_(0), set_display_frame_(false)
 {
     display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 + 2) = (color_dial_.cast<float>() * 0.4).cast<int>();
