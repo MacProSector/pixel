@@ -30,6 +30,9 @@ public:
     virtual void
     run() = 0;
 
+    std::shared_ptr<std::vector<Eigen::Vector3i>>
+    getSplashScreen() const;
+
 protected:
 
     std::shared_ptr<Buttons> buttons_;
@@ -38,6 +41,7 @@ protected:
 
     std::shared_ptr<Buttons::States> buttons_state_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_;
+    std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_splash_;
 };
 } // namespace kano_pixel_kit
 

@@ -4,22 +4,25 @@
  *  Created on: Nov 19, 2021
  *      Author: simonyu
  */
+#include "src/buttons/buttons.h"
+#include "src/display/display.h"
+#include "src/devices/esp32.h"
+#include "src/applications/launchpad.h"
+#include "src/logger/logger.h"
 #include "src/applications/point.h"
 #include "src/applications/restart.h"
-#include "src/buttons/buttons.h"
-#include "src/devices/esp32.h"
-#include "src/display/display.h"
-#include "src/logger/logger.h"
 
 using kano_pixel_kit::Buttons;
 using kano_pixel_kit::Display;
 using kano_pixel_kit::ESP32Platform;
+using kano_pixel_kit::LaunchPad;
 using kano_pixel_kit::Logger;
 using kano_pixel_kit::Point;
 using kano_pixel_kit::Restart;
 
 std::shared_ptr<Buttons> buttons_;
 std::shared_ptr<Display> display_;
+std::shared_ptr<LaunchPad> launchpad_;
 std::shared_ptr<Logger> logger_;
 std::shared_ptr<Point> point_;
 std::shared_ptr<Restart> restart_;
@@ -48,27 +51,27 @@ waitOnBarrier()
     logger_->logInfo("Started task \"" + task_name_core + "\" on core " + task_core);
 }
 
+// Applications, services, etc.
 void
 taskCore0(void *pvParameters)
 {
     waitOnBarrier();
 
-    point_->initialize();
-    restart_->initialize();
+    launchpad_->initialize();
 
     for(;;)
     {
-        point_->run();
-        restart_->run();
+        launchpad_->run();
         vTaskDelay(10);
     }
 }
 
+// Events, interrupts, etc.
 void
 taskCore1(void *pvParameters)
 {
     buttons_->initialize(logger_);
-    display_->initialize(logger_);
+    display_->initialize(logger_, 10);
 
     waitOnBarrier();
 
@@ -87,8 +90,12 @@ setup()
     logger_ = std::make_shared<Logger>();
     Buttons::states_ = std::make_shared<Buttons::States>();
 
+    launchpad_ = std::make_shared<LaunchPad>(buttons_, display_, logger_);
     point_ = std::make_shared<Point>(buttons_, display_, logger_);
     restart_ = std::make_shared<Restart>(buttons_, display_, logger_);
+
+    launchpad_->addApplication(point_);
+    launchpad_->addService(restart_);
 
     task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
     task_names_core_ = {"Core 0",  "Core 1"};

@@ -12,9 +12,18 @@ namespace kano_pixel_kit
 {
 Point::Point(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger) : Application(buttons, display, logger), 
-        color_dial_(Eigen::Vector3i(10, 10, 10)), color_buttons_(Eigen::Vector3i(
-        10, 0, 0)), pixel_index_dial_(0), pixel_index_buttons_(0), set_display_frame_(false)
+        color_dial_(Eigen::Vector3i(255, 255, 255)), color_buttons_(Eigen::Vector3i(
+        255, 0, 0)), pixel_index_dial_(0), pixel_index_buttons_(0), set_display_frame_(false)
 {
+    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 + 2) = (color_dial_.cast<float>() * 0.4).cast<int>();
+    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 + 1) = (color_dial_.cast<float>() * 0.6).cast<int>();
+    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3) = (color_dial_.cast<float>() * 0.8).cast<int>();
+    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 - 1) = color_dial_;
+
+    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 * 2 - 1) = (color_buttons_.cast<float>() * 0.4).cast<int>();
+    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 * 2) = (color_buttons_.cast<float>() * 0.6).cast<int>();
+    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 * 2 + 1) = (color_buttons_.cast<float>() * 0.8).cast<int>();
+    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 * 2 + 2) = color_buttons_;
 }
 
 void
@@ -101,14 +110,6 @@ Point::processJoystick()
     {
         display_frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
         display_frame_->at(++pixel_index_buttons_) = color_buttons_;
-        set_display_frame_ = true;
-    }
-
-    if (buttons_state_->joystick_click)
-    {
-        display_frame_->at(pixel_index_buttons_) = Eigen::Vector3i(0, 0, 0);
-        pixel_index_buttons_ = 0;
-        display_frame_->at(pixel_index_buttons_) = color_buttons_;
         set_display_frame_ = true;
     }
 }

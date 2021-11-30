@@ -22,7 +22,7 @@ Display::Display() : lock_(mutex_, std::defer_lock), timer_start_(0), timer_end_
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        frame_->push_back(Eigen::Vector3i(10, 10, 10));
+        frame_->push_back(Eigen::Vector3i(255, 255, 255));
     }
 }
 
