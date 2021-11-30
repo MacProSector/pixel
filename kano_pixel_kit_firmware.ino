@@ -51,7 +51,24 @@ waitOnBarrier()
 void
 taskCore0(void *pvParameters)
 {
+    waitOnBarrier();
+
+    point_->initialize();
+    restart_->initialize();
+
+    for(;;)
+    {
+        point_->run();
+        restart_->run();
+        vTaskDelay(10);
+    }
+}
+
+void
+taskCore1(void *pvParameters)
+{
     buttons_->initialize(logger_);
+    display_->initialize(logger_);
 
     waitOnBarrier();
 
@@ -63,32 +80,15 @@ taskCore0(void *pvParameters)
 }
 
 void
-taskCore1(void *pvParameters)
-{
-    display_->initialize(logger_);
-
-    waitOnBarrier();
-
-    point_->initialize(buttons_, display_);
-    restart_->initialize(buttons_, display_, logger_);
-
-    for(;;)
-    {
-        point_->run();
-        restart_->run();
-        vTaskDelay(10);
-    }
-}
-
-void
 setup()
 {
     buttons_ = std::make_shared<Buttons>();
     display_ = std::make_shared<Display>();
     logger_ = std::make_shared<Logger>();
-    point_ = std::make_shared<Point>();
-    restart_ = std::make_shared<Restart>();
     Buttons::states_ = std::make_shared<Buttons::States>();
+
+    point_ = std::make_shared<Point>(buttons_, display_, logger_);
+    restart_ = std::make_shared<Restart>(buttons_, display_, logger_);
 
     task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
     task_names_core_ = {"Core 0",  "Core 1"};

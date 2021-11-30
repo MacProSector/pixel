@@ -51,7 +51,7 @@ Buttons::initialize(std::shared_ptr<Logger> logger)
 std::shared_ptr<Buttons::States>
 Buttons::getStates()
 {
-    return std::make_shared<Buttons::States>(*states_);
+    return states_;
 }
 
 void

@@ -8,39 +8,33 @@
 
 #include "../applications/restart.h"
 #include "../devices/neopixel.h"
-#include "../display/display.h"
-#include "../logger/logger.h"
 
 namespace kano_pixel_kit
 {
-Restart::Restart() :
-        timer_started_(false), timer_start_(0), timer_end_(0)
+Restart::Restart(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
+        std::shared_ptr<Logger> logger) : Application(buttons, display, logger), timer_started_(
+        false), timer_start_(0), timer_end_(0)
 {
-    frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
-
-    for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
-    {
-        frame_->push_back(Eigen::Vector3i(10, 0, 0));
-    }
 }
 
 void
-Restart::initialize(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger)
+Restart::initialize()
 {
-    buttons_ = buttons;
-    display_ = display;
-    logger_ = logger;
+    buttons_state_ = buttons_->getStates();
+    display_frame_->clear();
 
-    states_ = buttons_->getStates();
+    for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
+    {
+        display_frame_->push_back(Eigen::Vector3i(10, 0, 0));
+    }
 }
 
 void
 Restart::run()
 {
-    states_ = buttons_->getStates();
+    buttons_state_ = buttons_->getStates();
 
-    if (states_->joystick_click)
+    if (buttons_state_->joystick_click)
     {
         if (!timer_started_)
         {
@@ -69,7 +63,7 @@ void
 Restart::displayRestartScreen()
 {
     while (!display_->lock());
-    display_->setFrame(frame_);
+    display_->setFrame(display_frame_);
 
     timer_start_ = millis();
     timer_end_ = timer_start_;

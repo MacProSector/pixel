@@ -7,41 +7,27 @@
 #ifndef SRC_KANO_PIXEL_KIT_APPLICATIONS_RESTART_H_
 #define SRC_KANO_PIXEL_KIT_APPLICATIONS_RESTART_H_
 
-#include <ArduinoEigenDense.h>
-#include <memory>
-#include <vector>
-
-#include "../buttons/buttons.h"
+#include "../applications/application.h"
 
 namespace kano_pixel_kit
 {
-class Display;
-class Logger;
-
-class Restart
+class Restart : public Application
 {
 public:
 
-    Restart();
-
-    void
-    initialize(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
+    Restart(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
             std::shared_ptr<Logger> logger);
 
     void
-    run();
+    initialize() override;
+
+    void
+    run() override;
 
 private:
 
     void
     displayRestartScreen();
-
-    std::shared_ptr<Buttons> buttons_;
-    std::shared_ptr<Display> display_;
-    std::shared_ptr<Logger> logger_;
-
-    std::shared_ptr<std::vector<Eigen::Vector3i>> frame_;
-    std::shared_ptr<Buttons::States> states_;
 
     bool timer_started_;
     unsigned long timer_start_;
