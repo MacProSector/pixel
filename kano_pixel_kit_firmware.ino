@@ -90,6 +90,8 @@ setup()
     logger_ = std::make_shared<Logger>();
     Buttons::states_ = std::make_shared<Buttons::States>();
 
+    logger_->initialize();
+
     launchpad_ = std::make_shared<LaunchPad>(buttons_, display_, logger_);
     point_ = std::make_shared<Point>(buttons_, display_, logger_);
     restart_ = std::make_shared<Restart>(buttons_, display_, logger_);
@@ -99,8 +101,6 @@ setup()
 
     task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
     task_names_core_ = {"Core 0",  "Core 1"};
-
-    logger_->initialize();
 
     xTaskCreatePinnedToCore(taskCore0, task_names_core_[0].c_str(), 2048, NULL, 3, NULL, 0);
     xTaskCreatePinnedToCore(taskCore1, task_names_core_[1].c_str(), 2048, NULL, 3, NULL, 1);
