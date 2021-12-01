@@ -4,20 +4,17 @@
  *  Created on: Nov 19, 2021
  *      Author: simonyu
  */
-#include <Adafruit_NeoPixel.h>
-
+#include "../display/display.h"
 #include "../devices/esp32.h"
 #include "../devices/neopixel.h"
-#include "../display/display.h"
 #include "../logger/logger.h"
 
 namespace kano_pixel_kit
 {
-Display::Display() : lock_(mutex_, std::defer_lock), timer_start_(0), timer_end_(0)
+Display::Display() : neopixel_(static_cast<int>(NeoPixel::size), static_cast<int>(
+        ESP32Pin::neo_pixel), NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock), timer_start_(
+        0), timer_end_(0)
 {
-    neopixel_ = std::make_shared<Adafruit_NeoPixel>(static_cast<int>(NeoPixel::size), static_cast<int>(
-            ESP32Pin::neo_pixel), NEO_GRB + NEO_KHZ800);
-
     frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
@@ -29,14 +26,14 @@ Display::Display() : lock_(mutex_, std::defer_lock), timer_start_(0), timer_end_
 void
 Display::initialize(std::shared_ptr<Logger> logger, const int& brightness_limit)
 {
-    neopixel_->begin();
+    neopixel_.begin();
     logger_ = logger;
 
     clear();
 
     if (brightness_limit >=0 && brightness_limit <= 255)
     {
-        neopixel_->setBrightness(brightness_limit);
+        neopixel_.setBrightness(brightness_limit);
     }
     else
     {
@@ -69,10 +66,10 @@ Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        neopixel_->setPixelColor(i, neopixel_->Color(frame->at(i).x(), frame->at(i).y(), frame->at(i).z()));
+        neopixel_.setPixelColor(i, neopixel_.Color(frame->at(i).x(), frame->at(i).y(), frame->at(i).z()));
     }
 
-    neopixel_->show();
+    neopixel_.show();
 }
 
 bool
@@ -93,8 +90,8 @@ void
 Display::clear()
 {
     lock();
-    neopixel_->clear();
-    neopixel_->show();
+    neopixel_.clear();
+    neopixel_.show();
     unlock();
 }
 

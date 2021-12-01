@@ -69,70 +69,82 @@ LaunchPad::run()
 void
 LaunchPad::processJoystick()
 {
-    static bool joystick_left_last = false;
-    static bool joystick_right_last = false;
-    static bool joystick_click_last = true; // Require reset after restart
     static bool joystick_click_reset = false;
+    static bool joystick_click_last = true; // Require reset after restart
 
-    if (joystick_left_last &&
-        !buttons_state_->joystick_left &&
-        application_index_ > 0)
+    if (!application_launched_)
     {
-        application_index_ --;
-    }
+        static bool joystick_left_last = false;
+        static bool joystick_right_last = false;
 
-    if (joystick_right_last &&
-        !buttons_state_->joystick_right &&
-        application_index_ < applications_.size() - 1)
-    {
-        application_index_ ++;
-    }
-
-    if (!joystick_click_last && buttons_state_->joystick_click)
-    {
-        joystick_click_reset = true;
-    }
-
-    if (!application_launched_ &&
-        joystick_click_reset &&
-        joystick_click_last &&
-        !buttons_state_->joystick_click)
-    {
-        application_ = applications_[application_index_];
-        application_launched_ = true;
-    }
-
-    if (buttons_state_->joystick_click)
-    {
-        if (!timer_started_)
+        if (joystick_left_last &&
+            !buttons_state_->joystick_left &&
+            application_index_ > 0)
         {
-            timer_started_ = true;
-            timer_start_ = millis();
+            application_index_ --;
         }
 
-        timer_end_ = millis();
+        if (joystick_right_last &&
+            !buttons_state_->joystick_right &&
+            application_index_ < applications_.size() - 1)
+        {
+            application_index_ ++;
+        }
+
+        if (!joystick_click_last && buttons_state_->joystick_click)
+        {
+            joystick_click_reset = true;
+        }
+
+        if (!application_launched_ &&
+            joystick_click_reset &&
+            joystick_click_last &&
+            !buttons_state_->joystick_click)
+        {
+            application_ = applications_[application_index_];
+            application_launched_ = true;
+        }
+
+        joystick_left_last = buttons_state_->joystick_left;
+        joystick_right_last = buttons_state_->joystick_right;
     }
     else
     {
-        timer_started_ = false;
-        timer_start_ = millis();
-        timer_end_ = timer_start_;
+        if (buttons_state_->joystick_click)
+        {
+            if (!timer_started_)
+            {
+                timer_started_ = true;
+                timer_start_ = millis();
+            }
+
+            timer_end_ = millis();
+        }
+        else
+        {
+            timer_started_ = false;
+            timer_start_ = millis();
+            timer_end_ = timer_start_;
+        }
+
+        if (timer_end_ - timer_start_ > 1000)
+        {
+            application_launched_ = false;
+            joystick_click_reset = false;
+        }
     }
 
-    if (timer_end_ - timer_start_ > 1000)
-    {
-        application_launched_ = false;
-        joystick_click_reset = false;
-    }
-
-    joystick_left_last = buttons_state_->joystick_left;
-    joystick_right_last = buttons_state_->joystick_right;
     joystick_click_last = buttons_state_->joystick_click;
 }
 
 void
 LaunchPad::processPushbutton()
 {
+    if (application_launched_)
+    {
+        return;
+    }
+
     static bool pushbutton_left_last = false;
     static bool pushbutton_right_last = false;
 

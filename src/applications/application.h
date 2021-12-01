@@ -38,7 +38,6 @@ protected:
     std::shared_ptr<Buttons> buttons_;
     std::shared_ptr<Display> display_;
     std::shared_ptr<Logger> logger_;
-
     std::shared_ptr<Buttons::States> buttons_state_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_splash_;

@@ -7,12 +7,11 @@
 #ifndef SRC_KANO_PIXEL_KIT_DISPLAY_DISPLAY_H_
 #define SRC_KANO_PIXEL_KIT_DISPLAY_DISPLAY_H_
 
+#include <Adafruit_NeoPixel.h>
 #include <ArduinoEigenDense.h>
 #include <memory>
 #include <mutex>
 #include <vector>
-
-class Adafruit_NeoPixel;
 
 namespace kano_pixel_kit
 {
@@ -47,13 +46,13 @@ private:
     void
     displayStartScreen();
 
-    std::shared_ptr<Logger> logger_;
-    std::shared_ptr<Adafruit_NeoPixel> neopixel_;
+    Adafruit_NeoPixel neopixel_;
 
+    std::shared_ptr<Logger> logger_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> frame_;
+
     std::unique_lock<std::mutex> lock_;
     std::mutex mutex_;
-
     unsigned long timer_start_;
     unsigned long timer_end_;
 };

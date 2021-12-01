@@ -38,10 +38,11 @@ private:
     void
     processPushbutton();
 
+    std::shared_ptr<Application> application_;
+
     std::vector<std::shared_ptr<Application>> applications_;
     std::vector<std::shared_ptr<Application>> services_;
 
-    std::shared_ptr<Application> application_;
     int application_index_;
     bool application_initialized_;
     bool application_launched_;

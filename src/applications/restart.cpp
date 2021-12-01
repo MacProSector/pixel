@@ -6,8 +6,8 @@
  */
 #include <Arduino.h>
 
-#include "../applications/restart.h"
 #include "../devices/neopixel.h"
+#include "../applications/restart.h"
 
 namespace kano_pixel_kit
 {
