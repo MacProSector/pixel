@@ -12,24 +12,34 @@ namespace kano_pixel_kit
 {
 Point::Point(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger) : Application(buttons, display, logger), 
-        color_dial_(Eigen::Vector3i(0, 0, 255)), color_buttons_(Eigen::Vector3i(
-        255, 0, 0)), pixel_index_dial_(0), pixel_index_buttons_(0), set_display_frame_(false)
+        color_dial_(Eigen::Vector3i(0, 0, static_cast<int>(NeoPixel::value_max))), color_buttons_(
+        Eigen::Vector3i(static_cast<int>(NeoPixel::value_max), 0, 0)), pixel_index_dial_(
+        0), pixel_index_buttons_(0), set_display_frame_(false)
 {
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 + 2) = (color_dial_.cast<float>() * 0.4).cast<int>();
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 + 1) = (color_dial_.cast<float>() * 0.6).cast<int>();
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3) = (color_dial_.cast<float>() * 0.8).cast<int>();
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 - 1) = color_dial_;
+    // Dial point with fading trail
+    display_frame_splash_->at(static_cast<int>(
+            NeoPixel::size) / 3 + 2) = (color_dial_.cast<float>() * 0.4).cast<int>();
+    display_frame_splash_->at(static_cast<int>(
+            NeoPixel::size) / 3 + 1) = (color_dial_.cast<float>() * 0.6).cast<int>();
+    display_frame_splash_->at(static_cast<int>(
+            NeoPixel::size) / 3) = (color_dial_.cast<float>() * 0.8).cast<int>();
+    display_frame_splash_->at(static_cast<int>(
+            NeoPixel::size) / 3 - 1) = color_dial_;
 
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 * 2 - 1) = (color_buttons_.cast<float>() * 0.4).cast<int>();
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 * 2) = (color_buttons_.cast<float>() * 0.6).cast<int>();
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 * 2 + 1) = (color_buttons_.cast<float>() * 0.8).cast<int>();
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 3 * 2 + 2) = color_buttons_;
+    // Button point with fading trail
+    display_frame_splash_->at(static_cast<int>(
+            NeoPixel::size) / 3 * 2 - 1) = (color_buttons_.cast<float>() * 0.4).cast<int>();
+    display_frame_splash_->at(static_cast<int>(
+            NeoPixel::size) / 3 * 2) = (color_buttons_.cast<float>() * 0.6).cast<int>();
+    display_frame_splash_->at(static_cast<int>(
+            NeoPixel::size) / 3 * 2 + 1) = (color_buttons_.cast<float>() * 0.8).cast<int>();
+    display_frame_splash_->at(static_cast<int>(
+            NeoPixel::size) / 3 * 2 + 2) = color_buttons_;
 }
 
 void
 Point::initialize()
 {
-    buttons_state_ = buttons_->getStates();
     pixel_index_dial_ = buttons_state_->dial / static_cast<float>(
             ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::size) - 1);
     display_frame_->at(pixel_index_dial_) = color_dial_;
@@ -41,7 +51,6 @@ Point::initialize()
 void
 Point::run()
 {
-    buttons_state_ = buttons_->getStates();
     set_display_frame_ = false;
 
     processDial();

@@ -24,13 +24,16 @@ public:
     Display();
 
     void
-    initialize(std::shared_ptr<Logger> logger, const int& brightness_limit = 255);
+    initialize(std::shared_ptr<Logger> logger);
 
     bool
     lock();
 
     void
     unlock();
+
+    void
+    setBrightness(const int &brightness);
 
     void
     setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame);

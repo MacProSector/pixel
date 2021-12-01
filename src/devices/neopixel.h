@@ -13,7 +13,10 @@ namespace kano_pixel_kit
     {
         height = 8,
         width = 16,
-        size = 128
+        size = 128,
+        value_max = 255,
+        brightness_min = 10,
+        brightness_max = 30
     };
 } // namespace kano_pixel_kit
 

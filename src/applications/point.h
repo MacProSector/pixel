@@ -37,7 +37,6 @@ private:
 
     Eigen::Vector3i color_dial_;
     Eigen::Vector3i color_buttons_;
-
     int pixel_index_dial_;
     int pixel_index_buttons_;
     bool set_display_frame_;

@@ -25,7 +25,7 @@ Restart::initialize()
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        display_frame_->push_back(Eigen::Vector3i(255, 0, 0));
+        display_frame_->push_back(Eigen::Vector3i(static_cast<int>(NeoPixel::value_max), 0, 0));
     }
 }
 

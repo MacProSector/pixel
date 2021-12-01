@@ -33,7 +33,9 @@ Application::Application(std::shared_ptr<Buttons> buttons, std::shared_ptr<Displ
             i % static_cast<int>(NeoPixel::width) == 0 ||
             i % static_cast<int>(NeoPixel::width) == static_cast<int>(NeoPixel::width) - 1)
         {
-            display_frame_splash_->push_back(Eigen::Vector3i(255, 255, 255));
+            display_frame_splash_->push_back(Eigen::Vector3i(static_cast<int>(
+                    NeoPixel::value_max), static_cast<int>(NeoPixel::value_max), static_cast<int>(
+                    NeoPixel::value_max)));
         }
         else
         {

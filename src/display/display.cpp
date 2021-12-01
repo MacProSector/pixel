@@ -6,40 +6,32 @@
  */
 #include "../display/display.h"
 #include "../devices/esp32.h"
-#include "../devices/neopixel.h"
 #include "../logger/logger.h"
+#include "../devices/neopixel.h"
 
 namespace kano_pixel_kit
 {
 Display::Display() : neopixel_(static_cast<int>(NeoPixel::size), static_cast<int>(
-        ESP32Pin::neo_pixel), NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock), timer_start_(
-        0), timer_end_(0)
+        ESP32Pin::neo_pixel), NEO_GRB + NEO_KHZ800), lock_(
+        mutex_, std::defer_lock), timer_start_(0), timer_end_(0)
 {
     frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        frame_->push_back(Eigen::Vector3i(255, 255, 255));
+        frame_->push_back(Eigen::Vector3i(static_cast<int>(NeoPixel::value_max), static_cast<int>(
+                NeoPixel::value_max), static_cast<int>(NeoPixel::value_max)));
     }
 }
 
 void
-Display::initialize(std::shared_ptr<Logger> logger, const int& brightness_limit)
+Display::initialize(std::shared_ptr<Logger> logger)
 {
     neopixel_.begin();
     logger_ = logger;
 
     clear();
-
-    if (brightness_limit >=0 && brightness_limit <= 255)
-    {
-        neopixel_.setBrightness(brightness_limit);
-    }
-    else
-    {
-        logger_->logError("Invalid brightness limit");
-    }
-
+    setBrightness(static_cast<int>(NeoPixel::brightness_min));
     displayStartScreen();
 }
 
@@ -56,6 +48,23 @@ Display::unlock()
 }
 
 void
+Display::setBrightness(const int &brightness)
+{
+    if (brightness < static_cast<int>(NeoPixel::brightness_min))
+    {
+        neopixel_.setBrightness(static_cast<int>(NeoPixel::brightness_min));
+    }
+    else if (brightness > static_cast<int>(NeoPixel::brightness_max))
+    {
+        neopixel_.setBrightness(static_cast<int>(NeoPixel::brightness_max));
+    }
+    else
+    {
+        neopixel_.setBrightness(brightness);
+    }
+}
+
+void
 Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 {
     if (frame->size() != static_cast<int>(NeoPixel::size))
@@ -66,7 +75,8 @@ Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        neopixel_.setPixelColor(i, neopixel_.Color(frame->at(i).x(), frame->at(i).y(), frame->at(i).z()));
+        neopixel_.setPixelColor(i, neopixel_.Color(
+                frame->at(i).x(), frame->at(i).y(), frame->at(i).z()));
     }
 
     neopixel_.show();

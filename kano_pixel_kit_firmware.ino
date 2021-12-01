@@ -4,6 +4,7 @@
  *  Created on: Nov 19, 2021
  *      Author: simonyu
  */
+#include "src/applications/brightness.h"
 #include "src/buttons/buttons.h"
 #include "src/display/display.h"
 #include "src/devices/esp32.h"
@@ -12,6 +13,7 @@
 #include "src/applications/point.h"
 #include "src/applications/restart.h"
 
+using kano_pixel_kit::Brightness;
 using kano_pixel_kit::Buttons;
 using kano_pixel_kit::Display;
 using kano_pixel_kit::ESP32Platform;
@@ -20,6 +22,7 @@ using kano_pixel_kit::Logger;
 using kano_pixel_kit::Point;
 using kano_pixel_kit::Restart;
 
+std::shared_ptr<Brightness> brightness_;
 std::shared_ptr<Buttons> buttons_;
 std::shared_ptr<Display> display_;
 std::shared_ptr<LaunchPad> launchpad_;
@@ -71,7 +74,7 @@ void
 taskCore1(void *pvParameters)
 {
     buttons_->initialize(logger_);
-    display_->initialize(logger_, 10);
+    display_->initialize(logger_);
 
     waitOnBarrier();
 
@@ -92,11 +95,13 @@ setup()
 
     logger_->initialize();
 
+    brightness_ = std::make_shared<Brightness>(buttons_, display_, logger_);
     launchpad_ = std::make_shared<LaunchPad>(buttons_, display_, logger_);
     point_ = std::make_shared<Point>(buttons_, display_, logger_);
     restart_ = std::make_shared<Restart>(buttons_, display_, logger_);
 
     launchpad_->addApplication(point_);
+    launchpad_->addApplication(brightness_);
     launchpad_->addService(restart_);
 
     task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
