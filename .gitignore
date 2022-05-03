@@ -1,2 +1,9 @@
+# Directories
 .vscode/
+build/
+install/
+cmake/arduino_cmake_toolchain/
+src/pixel/libraries/
+
+# Files
 .DS_Store

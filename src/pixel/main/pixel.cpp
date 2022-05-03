@@ -4,14 +4,18 @@
  *  Created on: Nov 19, 2021
  *      Author: simonyu
  */
-#include "src/applications/brightness.h"
-#include "src/buttons/buttons.h"
-#include "src/display/display.h"
-#include "src/devices/esp32.h"
-#include "src/applications/launchpad.h"
-#include "src/logger/logger.h"
-#include "src/applications/point.h"
-#include "src/applications/restart.h"
+
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+
+#include "applications/brightness.h"
+#include "buttons/buttons.h"
+#include "display/display.h"
+#include "devices/esp32.h"
+#include "applications/launchpad.h"
+#include "logger/logger.h"
+#include "applications/point.h"
+#include "applications/restart.h"
 
 using kano_pixel_kit::Brightness;
 using kano_pixel_kit::Buttons;
