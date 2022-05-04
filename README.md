@@ -1,10 +1,20 @@
-# Kano Pixel Kit Firmware
+# Pixel
+
+## Table of Contents
+
+1. [Project Setup](#project-setup)
 
 ## Project Setup
 
-This project depends on the installation of the following Arduino packages:
+This project depends on the installation of the following essential packages:
 
- - Adafruit NeoPixel
- - Eigen
+```bash
+cmake curl git grep tar
+```
 
-This project also depends on the installation of the ESP32 Arduino board support package [here](https://github.com/espressif/arduino-esp32).
+With the above packages installed, set up the project as follows:
+
+```bash
+cd scripts/pixel
+./setup.bash
+```

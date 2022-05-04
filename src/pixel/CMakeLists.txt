@@ -1,5 +1,5 @@
 # Set global parameters
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.7.0)
 project(pixel)
 
 # Disable compiler built-in include directory filtering
