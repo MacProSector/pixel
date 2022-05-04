@@ -125,6 +125,9 @@ then
 
 	sudo mv "$ARDUINO_CLI_NAME" "$ARDUINO_CLI_EXE_INSTALL"
 
+	echo "[INFO]: Configuring Arduino CLI $ARDUINO_CLI_VER_MAJ.$ARDUINO_CLI_VER_MIN.$ARDUINO_CLI_VER_PAT..."
+	$ARDUINO_CLI_NAME core update-index
+
 	RETURN=$?
 	if [ $RETURN -ne 0 ]
 	then
