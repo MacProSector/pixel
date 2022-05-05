@@ -30,7 +30,7 @@
 
 #include "application/application.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 class Point : public Application
 {
@@ -62,6 +62,6 @@ private:
     int pixel_index_buttons_;
     bool set_display_frame_;
 };
-} // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_POINT_H_ */

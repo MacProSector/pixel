@@ -28,7 +28,7 @@
 #ifndef COMMON_PIN_H_
 #define COMMON_PIN_H_
 
-namespace kano_pixel_kit
+namespace pixel
 {
 enum Pin
 {
@@ -42,6 +42,6 @@ enum Pin
     joystick_up = 35,
     dial = 36
 };
-}   // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif /* COMMON_PIN_H_ */

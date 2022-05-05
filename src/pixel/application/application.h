@@ -36,7 +36,7 @@
 #include "display/display.h"
 #include "utility/logger.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 class Application
 {
@@ -63,6 +63,6 @@ protected:
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_splash_;
 };
-} // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_APPLICATION_H_ */

@@ -31,7 +31,7 @@
 #include "utility/logger.h"
 #include "common/pin.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 Button::Button()
 {
@@ -123,4 +123,4 @@ Button::setPushbuttonRight()
 {
     state_->pushbutton_right = !static_cast<bool>(digitalRead(Pin::pushbutton_right));
 }
-} // namespace kano_pixel_kit
+}   // namespace pixel

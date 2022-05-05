@@ -30,7 +30,7 @@
 #include "common/pin.h"
 #include "common/platform.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 Display::Display() : neopixel_(PlatformNeoPixel::size, Pin::neo_pixel,
 NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock), timer_start_(0), timer_end_(0)
@@ -142,4 +142,4 @@ Display::displayStartScreen()
 
     unlock();
 }
-} // namespace kano_pixel_kit
+}   // namespace pixel

@@ -38,7 +38,7 @@
 #include "application/point.h"
 #include "application/restart.h"
 
-using namespace kano_pixel_kit;
+using namespace pixel;
 
 std::shared_ptr<Brightness> brightness_;
 std::shared_ptr<Button> button_;

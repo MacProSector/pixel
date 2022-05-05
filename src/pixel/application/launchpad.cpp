@@ -27,7 +27,7 @@
 
 #include "application/launchpad.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 LaunchPad::LaunchPad(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger) : Application(button, display, logger),
@@ -178,4 +178,4 @@ LaunchPad::processPushbutton()
     pushbutton_left_last = button_state_->pushbutton_left;
     pushbutton_right_last = button_state_->pushbutton_right;
 }
-} // namespace kano_pixel_kit
+}   // namespace pixel

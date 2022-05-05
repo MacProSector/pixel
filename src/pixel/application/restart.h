@@ -30,7 +30,7 @@
 
 #include "application/application.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 class Restart : public Application
 {
@@ -54,6 +54,6 @@ private:
     unsigned long timer_start_;
     unsigned long timer_end_;
 };
-} // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_RESTART_H_ */

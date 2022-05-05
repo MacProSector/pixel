@@ -30,7 +30,7 @@
 
 #include <memory>
 
-namespace kano_pixel_kit
+namespace pixel
 {
 class Logger;
 
@@ -95,6 +95,6 @@ private:
 
     std::shared_ptr<Logger> logger_;
 };
-} // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif /* SRC_KANO_PIXEL_KIT_BUTTONS_BUTTONS_H_ */

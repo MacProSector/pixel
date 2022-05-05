@@ -28,7 +28,7 @@
 #include "common/platform.h"
 #include "application/point.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 Point::Point(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger) : Application(button, display, logger),
@@ -147,4 +147,4 @@ Point::processPushbutton()
         set_display_frame_ = true;
     }
 }
-} // namespace kano_pixel_kit
+}   // namespace pixel

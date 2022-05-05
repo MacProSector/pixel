@@ -30,7 +30,7 @@
 
 #include "application/application.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 class Brightness : public Application
 {
@@ -57,6 +57,6 @@ private:
     int brightness_value_;
     bool initialized_;
 };
-} // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_BRIGHTNESS_H_ */

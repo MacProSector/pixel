@@ -30,7 +30,7 @@
 #include "common/platform.h"
 #include "application/restart.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 Restart::Restart(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger) : Application(button, display, logger),
@@ -94,4 +94,4 @@ Restart::displayRestartScreen()
         timer_end_ = millis();
     }
 }
-} // namespace kano_pixel_kit
+}   // namespace pixel

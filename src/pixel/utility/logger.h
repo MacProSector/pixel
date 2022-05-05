@@ -40,9 +40,9 @@
 #include <string>
 
 /*
- *  kano_pixel_kit namespace.
+ *  pixel namespace.
  */
-namespace kano_pixel_kit
+namespace pixel
 {
 /**
  *  @brief  Logger class.
@@ -163,6 +163,6 @@ private:
     LogLevel log_level_;    //!< Log level enum object.
     LogLevel status_;   //!< Status log level enum object.
 };
-}   // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif  // UTILITY_LOGGER_H_

@@ -34,7 +34,7 @@
 #include <mutex>
 #include <vector>
 
-namespace kano_pixel_kit
+namespace pixel
 {
 class Logger;
 
@@ -80,6 +80,6 @@ private:
     unsigned long timer_start_;
     unsigned long timer_end_;
 };
-} // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif /* SRC_KANO_PIXEL_KIT_DISPLAY_DISPLAY_H_ */

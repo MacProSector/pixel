@@ -28,7 +28,7 @@
 #include "application/brightness.h"
 #include "common/platform.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 Brightness::Brightness(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger) : Application(button, display, logger),
@@ -167,4 +167,4 @@ Brightness::displayBrightness()
 
     brightness_value_last = brightness_value_;
 }
-} // namespace kano_pixel_kit
+}   // namespace pixel

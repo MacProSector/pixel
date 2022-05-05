@@ -28,7 +28,7 @@
 #ifndef SRC_KANO_PIXEL_KIT_DEVICES_ESP32_H_
 #define SRC_KANO_PIXEL_KIT_DEVICES_ESP32_H_
 
-namespace kano_pixel_kit
+namespace pixel
 {
 enum Platform
 {
@@ -50,6 +50,6 @@ enum PlatformSerial
 {
     baud_rate = 115200
 };
-} // namespace kano_pixel_kit
+}   // namespace pixel
 
 #endif /* SRC_KANO_PIXEL_KIT_DEVICES_ESP32_H_ */

@@ -28,7 +28,7 @@
 #include "application/application.h"
 #include "common/platform.h"
 
-namespace kano_pixel_kit
+namespace pixel
 {
 Application::Application(std::shared_ptr<Button> buttons, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger)
@@ -69,4 +69,4 @@ Application::getSplashScreen() const
 {
     return display_frame_splash_;
 }
-} // namespace kano_pixel_kit
+}   // namespace pixel

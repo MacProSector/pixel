@@ -34,9 +34,9 @@
 #include "common/platform.h"
 
 /*
- *  kano_pixel_kit namespace.
+ *  pixel namespace.
  */
-namespace kano_pixel_kit
+namespace pixel
 {
 Logger::Logger() : log_level_(LogLevel::debug), status_(LogLevel::debug)
 {
@@ -210,4 +210,4 @@ Logger::logDebug(const std::string &log)
         }
     }
 }
-}   // namespace kano_pixel_kit
+}   // namespace pixel
