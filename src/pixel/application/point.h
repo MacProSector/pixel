@@ -15,7 +15,7 @@ class Point : public Application
 {
 public:
 
-    Point(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
+    Point(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
             std::shared_ptr<Logger> logger);
 
     void

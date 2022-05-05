@@ -11,7 +11,7 @@ add_library(
 # Set library link targets
 target_link_libraries(
 	pixel_application
-	pixel_buttons
+	pixel_button
 	pixel_display
 	pixel_utility
 )

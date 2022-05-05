@@ -6,18 +6,18 @@
  */
 #include <Arduino.h>
 
-#include "buttons/buttons.h"
+#include "button/button.h"
 #include "utility/logger.h"
 #include "common/pin.h"
 
 namespace kano_pixel_kit
 {
-Buttons::Buttons()
+Button::Button()
 {
 }
 
 void
-Buttons::initialize(std::shared_ptr<Logger> logger)
+Button::initialize(std::shared_ptr<Logger> logger)
 {
     logger_ = logger;
 
@@ -40,78 +40,78 @@ Buttons::initialize(std::shared_ptr<Logger> logger)
     setPushbuttonRight();
 
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(Pin::joystick_up)),
-            Buttons::setJoystickUp, CHANGE);
+            Button::setJoystickUp, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(Pin::joystick_down)),
-            Buttons::setJoystickDown, CHANGE);
+            Button::setJoystickDown, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(Pin::joystick_left)),
-            Buttons::setJoystickLeft, CHANGE);
+            Button::setJoystickLeft, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(Pin::joystick_right)),
-            Buttons::setJoystickRight, CHANGE);
+            Button::setJoystickRight, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(Pin::joystick_click)),
-            Buttons::setJoystickClick, CHANGE);
+            Button::setJoystickClick, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(Pin::pushbutton_left)),
-            Buttons::setPushbuttonLeft, CHANGE);
+            Button::setPushbuttonLeft, CHANGE);
     attachInterrupt(digitalPinToInterrupt(static_cast<int>(Pin::pushbutton_right)),
-            Buttons::setPushbuttonRight, CHANGE);
+            Button::setPushbuttonRight, CHANGE);
 }
 
-std::shared_ptr<Buttons::States>
-Buttons::getStates()
+std::shared_ptr<Button::State>
+Button::getState()
 {
-    return states_;
-}
-
-void
-Buttons::setDial()
-{
-    states_->dial = static_cast<int>(analogRead(static_cast<int>(Pin::dial)));
+    return state_;
 }
 
 void
-Buttons::setJoystickUp()
+Button::setDial()
 {
-    states_->joystick_up = !static_cast<bool>(digitalRead(static_cast<int>(Pin::joystick_up)));
+    state_->dial = static_cast<int>(analogRead(static_cast<int>(Pin::dial)));
 }
 
 void
-Buttons::setJoystickDown()
+Button::setJoystickUp()
 {
-    states_->joystick_down = !static_cast<bool>(digitalRead(
+    state_->joystick_up = !static_cast<bool>(digitalRead(static_cast<int>(Pin::joystick_up)));
+}
+
+void
+Button::setJoystickDown()
+{
+    state_->joystick_down = !static_cast<bool>(digitalRead(
             static_cast<int>(Pin::joystick_down)));
 }
 
 void
-Buttons::setJoystickLeft()
+Button::setJoystickLeft()
 {
-    states_->joystick_left = !static_cast<bool>(digitalRead(
+    state_->joystick_left = !static_cast<bool>(digitalRead(
             static_cast<int>(Pin::joystick_left)));
 }
 
 void
-Buttons::setJoystickRight()
+Button::setJoystickRight()
 {
-    states_->joystick_right = !static_cast<bool>(digitalRead(
+    state_->joystick_right = !static_cast<bool>(digitalRead(
             static_cast<int>(Pin::joystick_right)));
 }
 
 void
-Buttons::setJoystickClick()
+Button::setJoystickClick()
 {
-    states_->joystick_click = !static_cast<bool>(digitalRead(
+    state_->joystick_click = !static_cast<bool>(digitalRead(
             static_cast<int>(Pin::joystick_click)));
 }
 
 void
-Buttons::setPushbuttonLeft()
+Button::setPushbuttonLeft()
 {
-    states_->pushbutton_left = !static_cast<bool>(digitalRead(
+    state_->pushbutton_left = !static_cast<bool>(digitalRead(
             static_cast<int>(Pin::pushbutton_left)));
 }
 
 void
-Buttons::setPushbuttonRight()
+Button::setPushbuttonRight()
 {
-    states_->pushbutton_right = !static_cast<bool>(digitalRead(
+    state_->pushbutton_right = !static_cast<bool>(digitalRead(
             static_cast<int>(Pin::pushbutton_right)));
 }
 } // namespace kano_pixel_kit

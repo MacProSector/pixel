@@ -11,7 +11,7 @@
 #include <memory>
 #include <vector>
 
-#include "buttons/buttons.h"
+#include "button/button.h"
 #include "display/display.h"
 #include "utility/logger.h"
 
@@ -21,7 +21,7 @@ class Application
 {
 public:
 
-    Application(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
+    Application(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
             std::shared_ptr<Logger> logger);
 
     virtual void
@@ -35,10 +35,10 @@ public:
 
 protected:
 
-    std::shared_ptr<Buttons> buttons_;
+    std::shared_ptr<Button> button_;
     std::shared_ptr<Display> display_;
     std::shared_ptr<Logger> logger_;
-    std::shared_ptr<Buttons::States> buttons_state_;
+    std::shared_ptr<Button::State> button_state_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_splash_;
 };

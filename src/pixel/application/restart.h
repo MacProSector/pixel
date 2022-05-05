@@ -15,7 +15,7 @@ class Restart : public Application
 {
 public:
 
-    Restart(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
+    Restart(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
             std::shared_ptr<Logger> logger);
 
     void

@@ -9,8 +9,8 @@
 
 namespace kano_pixel_kit
 {
-Brightness::Brightness(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(buttons, display, logger),
+Brightness::Brightness(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
+        std::shared_ptr<Logger> logger) : Application(button, display, logger),
         color_(static_cast<int>(PlatformNeoPixel::value_max),
                 static_cast<int>(PlatformNeoPixel::value_max), 0),
         brightness_value_(static_cast<int>(PlatformNeoPixel::brightness_min)), initialized_(false)
@@ -137,7 +137,7 @@ Brightness::processDial()
     static int brightness_value_last = 0;
 
     brightness_value_ = static_cast<int>(PlatformNeoPixel::brightness_min)
-            + buttons_state_->dial / static_cast<float>(Platform::analog_max)
+            + button_state_->dial / static_cast<float>(Platform::analog_max)
                     * (static_cast<int>(PlatformNeoPixel::brightness_max)
                             - static_cast<int>(PlatformNeoPixel::brightness_min));
 

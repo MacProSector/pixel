@@ -13,11 +13,11 @@ namespace kano_pixel_kit
 {
 class Logger;
 
-class Buttons
+class Button
 {
 public:
 
-    struct States
+    struct State
     {
         int dial;
         bool joystick_up;
@@ -29,20 +29,20 @@ public:
         bool pushbutton_right;
 
         inline
-        States() : dial(0), joystick_up(false), joystick_down(false), joystick_left(false),
+        State() : dial(0), joystick_up(false), joystick_down(false), joystick_left(false),
                 joystick_right(false), joystick_click(false), pushbutton_left(false),
                 pushbutton_right(false)
         {
         }
     };
 
-    Buttons();
+    Button();
 
     void
     initialize(std::shared_ptr<Logger> logger);
 
-    std::shared_ptr<States>
-    getStates();
+    std::shared_ptr<State>
+    getState();
 
     static void
     setDial();
@@ -68,7 +68,7 @@ public:
     static void
     setPushbuttonRight();
 
-    static std::shared_ptr<States> states_;
+    static std::shared_ptr<State> state_;
 
 private:
 

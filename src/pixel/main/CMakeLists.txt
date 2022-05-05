@@ -8,7 +8,7 @@ add_executable(
 target_link_libraries(
 	pixel PRIVATE
 	pixel_application
-	pixel_buttons
+	pixel_button
 	pixel_display
 	pixel_utility
 )

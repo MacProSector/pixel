@@ -11,8 +11,8 @@
 
 namespace kano_pixel_kit
 {
-Restart::Restart(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(buttons, display, logger),
+Restart::Restart(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
+        std::shared_ptr<Logger> logger) : Application(button, display, logger),
         timer_started_(false), timer_start_(0), timer_end_(0)
 {
 }
@@ -20,7 +20,7 @@ Restart::Restart(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> disp
 void
 Restart::initialize()
 {
-    buttons_state_ = buttons_->getStates();
+    button_state_ = button_->getState();
     display_frame_->clear();
 
     for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
@@ -32,9 +32,9 @@ Restart::initialize()
 void
 Restart::run()
 {
-    buttons_state_ = buttons_->getStates();
+    button_state_ = button_->getState();
 
-    if (buttons_state_->joystick_click)
+    if (button_state_->joystick_click)
     {
         if (!timer_started_)
         {

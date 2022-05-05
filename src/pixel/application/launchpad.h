@@ -15,7 +15,7 @@ class LaunchPad : public Application
 {
 public:
 
-    LaunchPad(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
+    LaunchPad(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
             std::shared_ptr<Logger> logger);
 
     void

@@ -9,14 +9,14 @@
 
 namespace kano_pixel_kit
 {
-Application::Application(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
+Application::Application(std::shared_ptr<Button> buttons, std::shared_ptr<Display> display,
         std::shared_ptr<Logger> logger)
 {
-    buttons_ = buttons;
+    button_ = buttons;
     display_ = display;
     logger_ = logger;
 
-    buttons_state_ = buttons_->getStates();
+    button_state_ = button_->getState();
     display_frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
     display_frame_splash_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 

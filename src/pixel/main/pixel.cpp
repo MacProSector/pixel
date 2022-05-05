@@ -10,7 +10,7 @@
 #include <freertos/portmacro.h>
 
 #include "application/brightness.h"
-#include "buttons/buttons.h"
+#include "button/button.h"
 #include "display/display.h"
 #include "application/launchpad.h"
 #include "utility/logger.h"
@@ -21,13 +21,13 @@
 using namespace kano_pixel_kit;
 
 std::shared_ptr<Brightness> brightness_;
-std::shared_ptr<Buttons> buttons_;
+std::shared_ptr<Button> button_;
 std::shared_ptr<Display> display_;
 std::shared_ptr<LaunchPad> launchpad_;
 std::shared_ptr<Logger> logger_;
 std::shared_ptr<Point> point_;
 std::shared_ptr<Restart> restart_;
-std::shared_ptr<Buttons::States> Buttons::states_;
+std::shared_ptr<Button::State> Button::state_;
 
 volatile int task_barrier_;
 std::mutex task_barrier_mutex_;
@@ -72,14 +72,14 @@ taskCore0(void* pvParameters)
 void
 taskCore1(void* pvParameters)
 {
-    buttons_->initialize(logger_);
+    button_->initialize(logger_);
     display_->initialize(logger_);
 
     waitOnBarrier();
 
     for (;;)
     {
-        buttons_->setDial();
+        button_->setDial();
         vTaskDelay(10);
     }
 }
@@ -87,17 +87,17 @@ taskCore1(void* pvParameters)
 void
 setup()
 {
-    buttons_ = std::make_shared<Buttons>();
+    button_ = std::make_shared<Button>();
     display_ = std::make_shared<Display>();
     logger_ = std::make_shared<Logger>();
-    Buttons::states_ = std::make_shared<Buttons::States>();
+    Button::state_ = std::make_shared<Button::State>();
 
     logger_->initialize();
 
-    brightness_ = std::make_shared<Brightness>(buttons_, display_, logger_);
-    launchpad_ = std::make_shared<LaunchPad>(buttons_, display_, logger_);
-    point_ = std::make_shared<Point>(buttons_, display_, logger_);
-    restart_ = std::make_shared<Restart>(buttons_, display_, logger_);
+    brightness_ = std::make_shared<Brightness>(button_, display_, logger_);
+    launchpad_ = std::make_shared<LaunchPad>(button_, display_, logger_);
+    point_ = std::make_shared<Point>(button_, display_, logger_);
+    restart_ = std::make_shared<Restart>(button_, display_, logger_);
 
     launchpad_->addApplication(point_);
     launchpad_->addApplication(brightness_);
