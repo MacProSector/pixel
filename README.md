@@ -7,19 +7,22 @@
 3. [Setting Up the Project](#setting-up-the-project)
 4. [Building the Project](#building-the-project)
 5. [Uploading the Project](#uploading-the-project)
+6. [Developing the Project](#developing-the-project)
 
 ## Prerequisites
+
+Ensure the following prerequisites are installed:
 
 * Kano Pixel Kit (retail version).
 * Linux operating system.
 * macOS operating system.
-* Essential toolchain packages.
-  - cmake (3.7.0 or higher)
-  - curl
-  - git
-  - grep
-  - make
-  - tar
+* Essential tools.
+  - `cmake` (3.7.0 or higher)
+  - `curl`
+  - `git`
+  - `grep`
+  - `make`
+  - `tar`
 
 ## Cloning the Project
 
@@ -77,3 +80,24 @@ If needed, upload the debug project as follows:
 cd build/pixel/debug
 make upload SERIAL_PORT=<device>
 ```
+
+## Developing the Project
+
+The Eclipse IDE for C++ is recommended for the development of the project.
+
+With the project built, set up the project with Eclipse IDE as follows:
+
+1. Go to `File->Import->General->Existing Projects into Workspace`.
+2. Click `Browse...` to the right to `Select root directory:`.
+3. Select `build/pixel/release` or `build/pixel/debug`.
+4. Click `Finish`.
+
+A Doxygen configuration is also provided for the project.
+
+Under the project directory, generate the Doxygen documentation as follows:
+
+```bash
+doxygen doc/Doxyfile
+```
+
+The generated Doxygen documentation would be under `doc/html`.
