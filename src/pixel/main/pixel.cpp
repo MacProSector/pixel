@@ -7,6 +7,7 @@
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include <freertos/portmacro.h>
 
 #include "applications/brightness.h"
 #include "buttons/buttons.h"

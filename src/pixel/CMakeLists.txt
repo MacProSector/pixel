@@ -19,6 +19,7 @@ set(EIGEN_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/libraries/Eigen)
 include_directories(
 	${CMAKE_SOURCE_DIR}
 	${CMAKE_BINARY_DIR}
+	${ARDUINO_BOARD_COMPILER_SDK_PATH}/include/esp_common/include
 	${ARDUINO_BOARD_COMPILER_SDK_PATH}/include/freertos/include
 	${ARDUINO_BOARD_COMPILER_SDK_PATH}/include/freertos/port/xtensa/include
 	${ADAFRUIT_NEOPIXEL_INCLUDE_DIRS}
