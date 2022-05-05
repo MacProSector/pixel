@@ -35,14 +35,6 @@ Brightness::Brightness(std::shared_ptr<Button> button, std::shared_ptr<Display> 
         color_(PlatformNeoPixel::value_max, PlatformNeoPixel::value_max, 0),
         brightness_value_(PlatformNeoPixel::brightness_min), initialized_(false)
 {
-    // Center
-    display_frame_splash_->at(PlatformNeoPixel::size / 2 - PlatformNeoPixel::width / 2 - 1) =
-            color_;
-    display_frame_splash_->at(PlatformNeoPixel::size / 2 - PlatformNeoPixel::width / 2) = color_;
-    display_frame_splash_->at(PlatformNeoPixel::size / 2 + PlatformNeoPixel::width / 2 - 1) =
-            color_;
-    display_frame_splash_->at(PlatformNeoPixel::size / 2 + PlatformNeoPixel::width / 2) = color_;
-
     // Top horizontal leaves
     display_frame_splash_->at(PlatformNeoPixel::size / 2 - PlatformNeoPixel::width / 2 - 2) =
             color_;
