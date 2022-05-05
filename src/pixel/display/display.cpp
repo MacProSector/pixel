@@ -33,7 +33,7 @@
 namespace pixel
 {
 Display::Display() : neopixel_(PlatformNeoPixel::size, Pin::neo_pixel,
-NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock), timer_start_(0), timer_end_(0)
+NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock)
 {
     frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 
@@ -130,15 +130,9 @@ void
 Display::displayStartScreen()
 {
     while (!lock());
+
     setFrame(frame_);
-
-    timer_start_ = millis();
-    timer_end_ = timer_start_;
-
-    while (timer_end_ - timer_start_ < 500)
-    {
-        timer_end_ = millis();
-    }
+    vTaskDelay(500);
 
     unlock();
 }

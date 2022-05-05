@@ -84,14 +84,8 @@ void
 Restart::displayRestartScreen()
 {
     while (!display_->lock());
+
     display_->setFrame(display_frame_);
-
-    timer_start_ = millis();
-    timer_end_ = timer_start_;
-
-    while (timer_end_ - timer_start_ < 500)
-    {
-        timer_end_ = millis();
-    }
+    vTaskDelay(500);
 }
 }   // namespace pixel

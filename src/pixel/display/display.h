@@ -77,8 +77,6 @@ private:
 
     std::unique_lock<std::mutex> lock_;
     std::mutex mutex_;
-    unsigned long timer_start_;
-    unsigned long timer_end_;
 };
 }   // namespace pixel
 
