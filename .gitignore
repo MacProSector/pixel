@@ -1,6 +1,8 @@
 # Directories
 .vscode/
 build/
+doc/html/
+html/
 install/
 cmake/arduino_cmake_toolchain/
 src/pixel/libraries/
