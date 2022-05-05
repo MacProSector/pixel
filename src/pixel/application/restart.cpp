@@ -6,7 +6,7 @@
  */
 #include <Arduino.h>
 
-#include "devices/neopixel.h"
+#include "common/platform.h"
 #include "application/restart.h"
 
 namespace kano_pixel_kit
@@ -23,9 +23,9 @@ Restart::initialize()
     buttons_state_ = buttons_->getStates();
     display_frame_->clear();
 
-    for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
+    for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
     {
-        display_frame_->push_back(Eigen::Vector3i(static_cast<int>(NeoPixel::value_max), 0, 0));
+        display_frame_->push_back(Eigen::Vector3i(static_cast<int>(PlatformNeoPixel::value_max), 0, 0));
     }
 }
 

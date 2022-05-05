@@ -6,8 +6,8 @@
  */
 #include <Arduino.h>
 
-#include "../devices/esp32.h"
-#include "../logger/logger.h"
+#include "common/platform.h"
+#include "logger/logger.h"
 
 namespace kano_pixel_kit
 {
@@ -19,7 +19,7 @@ void
 Logger::initialize()
 {
     setLogLevel(LogLevel::debug);
-    Serial.begin(static_cast<int>(ESP32Serial::baud_rate));
+    Serial.begin(static_cast<int>(PlatformSerial::baud_rate));
 }
 
 void

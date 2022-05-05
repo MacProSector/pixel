@@ -12,9 +12,9 @@
 #include "application/brightness.h"
 #include "buttons/buttons.h"
 #include "display/display.h"
-#include "devices/esp32.h"
 #include "application/launchpad.h"
 #include "logger/logger.h"
+#include "common/platform.h"
 #include "application/point.h"
 #include "application/restart.h"
 
@@ -103,7 +103,7 @@ setup()
     launchpad_->addApplication(brightness_);
     launchpad_->addService(restart_);
 
-    task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
+    task_barrier_ = static_cast<int>(Platform::cpu_cores);
     task_names_core_ = {"Core 0", "Core 1"};
 
     xTaskCreatePinnedToCore(taskCore0, task_names_core_[0].c_str(), 2048, NULL, 3, NULL, 0);

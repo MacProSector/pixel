@@ -5,7 +5,7 @@
  *      Author: simonyu
  */
 #include "application/application.h"
-#include "devices/neopixel.h"
+#include "common/platform.h"
 
 namespace kano_pixel_kit
 {
@@ -20,23 +20,23 @@ Application::Application(std::shared_ptr<Buttons> buttons, std::shared_ptr<Displ
     display_frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
     display_frame_splash_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 
-    for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
+    for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
     {
         display_frame_->push_back(Eigen::Vector3i(0, 0, 0));
     }
 
-    for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
+    for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
     {
         // Default white border
-        if (i < static_cast<int>(NeoPixel::width)
-                || i > static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width)
-                || i % static_cast<int>(NeoPixel::width) == 0
-                || i % static_cast<int>(NeoPixel::width) == static_cast<int>(NeoPixel::width) - 1)
+        if (i < static_cast<int>(PlatformNeoPixel::width)
+                || i > static_cast<int>(PlatformNeoPixel::size) - static_cast<int>(PlatformNeoPixel::width)
+                || i % static_cast<int>(PlatformNeoPixel::width) == 0
+                || i % static_cast<int>(PlatformNeoPixel::width) == static_cast<int>(PlatformNeoPixel::width) - 1)
         {
             display_frame_splash_->push_back(
-                    Eigen::Vector3i(static_cast<int>(NeoPixel::value_max),
-                            static_cast<int>(NeoPixel::value_max),
-                            static_cast<int>(NeoPixel::value_max)));
+                    Eigen::Vector3i(static_cast<int>(PlatformNeoPixel::value_max),
+                            static_cast<int>(PlatformNeoPixel::value_max),
+                            static_cast<int>(PlatformNeoPixel::value_max)));
         }
         else
         {
