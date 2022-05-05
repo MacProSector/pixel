@@ -64,7 +64,6 @@ waitOnBarrier()
     {
         vTaskDelay(10);
     }
-    ;
 
     const int task_core_index = xPortGetCoreID();
     const auto task_name_core = task_names_core_[task_core_index];
