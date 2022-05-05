@@ -45,6 +45,9 @@ public:
     Application(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
             std::shared_ptr<Logger> logger);
 
+    virtual
+    ~Application() = default;
+
     virtual void
     initialize() = 0;
 
