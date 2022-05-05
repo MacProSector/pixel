@@ -27,6 +27,7 @@
 
 #include <Arduino.h>
 
+#include "button/button_state.h"
 #include "common/platform.h"
 #include "application/restart.h"
 
@@ -41,7 +42,6 @@ Restart::Restart(std::shared_ptr<Button> button, std::shared_ptr<Display> displa
 void
 Restart::initialize()
 {
-    button_state_ = button_->getState();
     display_frame_->clear();
 
     for (int i = 0; i < PlatformNeoPixel::size; i ++)
@@ -53,9 +53,9 @@ Restart::initialize()
 void
 Restart::run()
 {
-    button_state_ = button_->getState();
+    auto button_state = button_->getButtonState();
 
-    if (button_state_->joystick_click)
+    if (button_state->joystick_click)
     {
         if (!timer_started_)
         {

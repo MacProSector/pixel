@@ -19,66 +19,56 @@
  */
 
 /*
- * button.h
+ * interrupt.cpp
  *
- *  Created on: Nov 20, 2021
+ *  Created on: May 4, 2022
  *      Author: simonyu
  */
 
-#ifndef BUTTON_BUTTON_H_
-#define BUTTON_BUTTON_H_
-
-#include <memory>
+#include "common/global.h"
 
 namespace pixel
 {
-class ButtonState;
-class Logger;
 
-class Button
+void
+joystickUpInterruptHandler()
 {
-public:
+    button_->onJoystickUpChange();
+}
 
-    Button();
+void
+joystickDownInterruptHandler()
+{
+    button_->onJoystickDownChange();
+}
 
-    void
-    initialize(std::shared_ptr<Logger> logger);
+void
+joystickLeftInterruptHandler()
+{
+    button_->onJoystickLeftChange();
+}
 
-    std::shared_ptr<ButtonState>
-    getButtonState();
+void
+joystickRightInterruptHandler()
+{
+    button_->onJoystickRightChange();
+}
 
-    void
-    onJoystickUpChange();
+void
+joystickClickInterruptHandler()
+{
+    button_->onJoystickClickChange();
+}
 
-    void
-    onJoystickDownChange();
+void
+pushbuttonLeftInterruptHandler()
+{
+    button_->onPushbuttonLeftChange();
+}
 
-    void
-    onJoystickLeftChange();
-
-    void
-    onJoystickRightChange();
-
-    void
-    onJoystickClickChange();
-
-    void
-    onPushbuttonLeftChange();
-
-    void
-    onPushbuttonRightChange();
-
-    void
-    update();
-
-private:
-
-    void
-    readDial();
-
-    std::shared_ptr<Logger> logger_;
-    std::shared_ptr<ButtonState> button_state_;
-};
+void
+pushbuttonRightInterruptHandler()
+{
+    button_->onPushbuttonRightChange();
+}
 }   // namespace pixel
-
-#endif  // BUTTON_BUTTON_H_

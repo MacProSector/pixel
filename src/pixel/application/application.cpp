@@ -37,7 +37,6 @@ Application::Application(std::shared_ptr<Button> buttons, std::shared_ptr<Displa
     display_ = display;
     logger_ = logger;
 
-    button_state_ = button_->getState();
     display_frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
     display_frame_splash_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 

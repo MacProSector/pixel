@@ -19,52 +19,20 @@
  */
 
 /*
- * application.h
+ * global.h
  *
- *  Created on: Nov 30, 2021
+ *  Created on: May 5, 2022
  *      Author: simonyu
  */
 
-#ifndef APPLICATION_APPLICATION_H_
-#define APPLICATION_APPLICATION_H_
-
-#include <ArduinoEigenDense.h>
-#include <memory>
-#include <vector>
+#ifndef COMMON_GLOBAL_H_
+#define COMMON_GLOBAL_H_
 
 #include "button/button.h"
-#include "display/display.h"
-#include "utility/logger.h"
 
 namespace pixel
 {
-class Application
-{
-public:
-
-    Application(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
-            std::shared_ptr<Logger> logger);
-
-    virtual
-    ~Application() = default;
-
-    virtual void
-    initialize() = 0;
-
-    virtual void
-    run() = 0;
-
-    std::shared_ptr<std::vector<Eigen::Vector3i>>
-    getSplashScreen() const;
-
-protected:
-
-    std::shared_ptr<Button> button_;
-    std::shared_ptr<Display> display_;
-    std::shared_ptr<Logger> logger_;
-    std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_;
-    std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_splash_;
-};
+extern std::shared_ptr<Button> button_;
 }   // namespace pixel
 
-#endif  // APPLICATION_APPLICATION_H_
+#endif /* COMMON_GLOBAL_H_ */

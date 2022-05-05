@@ -19,66 +19,37 @@
  */
 
 /*
- * button.h
+ * interrupt.h
  *
- *  Created on: Nov 20, 2021
+ *  Created on: May 4, 2022
  *      Author: simonyu
  */
 
-#ifndef BUTTON_BUTTON_H_
-#define BUTTON_BUTTON_H_
-
-#include <memory>
+#ifndef UTILITY_INTERRUPT_H_
+#define UTILITY_INTERRUPT_H_
 
 namespace pixel
 {
-class ButtonState;
-class Logger;
+void
+joystickUpInterruptHandler();
 
-class Button
-{
-public:
+void
+joystickDownInterruptHandler();
 
-    Button();
+void
+joystickLeftInterruptHandler();
 
-    void
-    initialize(std::shared_ptr<Logger> logger);
+void
+joystickRightInterruptHandler();
 
-    std::shared_ptr<ButtonState>
-    getButtonState();
+void
+joystickClickInterruptHandler();
 
-    void
-    onJoystickUpChange();
+void
+pushbuttonLeftInterruptHandler();
 
-    void
-    onJoystickDownChange();
-
-    void
-    onJoystickLeftChange();
-
-    void
-    onJoystickRightChange();
-
-    void
-    onJoystickClickChange();
-
-    void
-    onPushbuttonLeftChange();
-
-    void
-    onPushbuttonRightChange();
-
-    void
-    update();
-
-private:
-
-    void
-    readDial();
-
-    std::shared_ptr<Logger> logger_;
-    std::shared_ptr<ButtonState> button_state_;
-};
+void
+pushbuttonRightInterruptHandler();
 }   // namespace pixel
 
-#endif  // BUTTON_BUTTON_H_
+#endif  // UTILITY_INTERRUPT_H_

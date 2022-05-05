@@ -26,6 +26,7 @@
  */
 
 #include "common/platform.h"
+#include "button/button_state.h"
 #include "application/point.h"
 
 namespace pixel
@@ -58,7 +59,9 @@ Point::Point(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
 void
 Point::initialize()
 {
-    pixel_index_dial_ = button_state_->dial / static_cast<float>(Platform::analog_max)
+    auto button_state = button_->getButtonState();
+
+    pixel_index_dial_ = button_state->dial / static_cast<float>(Platform::analog_max)
             * (PlatformNeoPixel::size - 1);
     display_frame_->at(pixel_index_dial_) = color_dial_;
     display_frame_->at(pixel_index_buttons_) = color_buttons_;
@@ -90,8 +93,9 @@ void
 Point::processDial()
 {
     static int pixel_index_dial_last = 0;
+    auto button_state = button_->getButtonState();
 
-    pixel_index_dial_ = button_state_->dial / static_cast<float>(Platform::analog_max)
+    pixel_index_dial_ = button_state->dial / static_cast<float>(Platform::analog_max)
             * (PlatformNeoPixel::size - 1);
 
     if (pixel_index_dial_ != pixel_index_dial_last)
@@ -105,26 +109,28 @@ Point::processDial()
 void
 Point::processJoystick()
 {
-    if (button_state_->joystick_up && pixel_index_buttons_ >= PlatformNeoPixel::width)
+    auto button_state = button_->getButtonState();
+
+    if (button_state->joystick_up && pixel_index_buttons_ >= PlatformNeoPixel::width)
     {
         pixel_index_buttons_ -= PlatformNeoPixel::width;
         set_display_frame_ = true;
     }
 
-    if (button_state_->joystick_down
+    if (button_state->joystick_down
             && pixel_index_buttons_ < PlatformNeoPixel::size - PlatformNeoPixel::width)
     {
         pixel_index_buttons_ += PlatformNeoPixel::width;
         set_display_frame_ = true;
     }
 
-    if (button_state_->joystick_left && pixel_index_buttons_ % PlatformNeoPixel::width > 0)
+    if (button_state->joystick_left && pixel_index_buttons_ % PlatformNeoPixel::width > 0)
     {
         pixel_index_buttons_ --;
         set_display_frame_ = true;
     }
 
-    if (button_state_->joystick_right
+    if (button_state->joystick_right
             && pixel_index_buttons_ % PlatformNeoPixel::width < PlatformNeoPixel::width - 1)
     {
         pixel_index_buttons_ ++;
@@ -135,13 +141,15 @@ Point::processJoystick()
 void
 Point::processPushbutton()
 {
-    if (button_state_->pushbutton_left && pixel_index_buttons_ > 0)
+    auto button_state = button_->getButtonState();
+
+    if (button_state->pushbutton_left && pixel_index_buttons_ > 0)
     {
         pixel_index_buttons_ --;
         set_display_frame_ = true;
     }
 
-    if (button_state_->pushbutton_right && pixel_index_buttons_ < PlatformNeoPixel::size - 1)
+    if (button_state->pushbutton_right && pixel_index_buttons_ < PlatformNeoPixel::size - 1)
     {
         pixel_index_buttons_ ++;
         set_display_frame_ = true;

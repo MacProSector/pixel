@@ -30,24 +30,23 @@
 #include <freertos/portmacro.h>
 
 #include "application/brightness.h"
-#include "button/button.h"
-#include "display/display.h"
 #include "application/launchpad.h"
-#include "utility/logger.h"
-#include "common/platform.h"
 #include "application/point.h"
 #include "application/restart.h"
+#include "button/button.h"
+#include "common/global.h"
+#include "common/platform.h"
+#include "display/display.h"
+#include "utility/logger.h"
 
 using namespace pixel;
 
 std::shared_ptr<Brightness> brightness_;
-std::shared_ptr<Button> button_;
 std::shared_ptr<Display> display_;
 std::shared_ptr<LaunchPad> launchpad_;
 std::shared_ptr<Logger> logger_;
 std::shared_ptr<Point> point_;
 std::shared_ptr<Restart> restart_;
-std::shared_ptr<Button::State> Button::state_;
 
 volatile int task_barrier_;
 std::mutex task_barrier_mutex_;
@@ -98,7 +97,7 @@ taskCore1(void* pvParameters)
 
     for (;;)
     {
-        button_->setDial();
+        button_->update();
         vTaskDelay(10);
     }
 }
@@ -109,7 +108,6 @@ setup()
     button_ = std::make_shared<Button>();
     display_ = std::make_shared<Display>();
     logger_ = std::make_shared<Logger>();
-    Button::state_ = std::make_shared<Button::State>();
 
     brightness_ = std::make_shared<Brightness>(button_, display_, logger_);
     launchpad_ = std::make_shared<LaunchPad>(button_, display_, logger_);

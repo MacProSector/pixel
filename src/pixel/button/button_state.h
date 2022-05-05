@@ -19,66 +19,35 @@
  */
 
 /*
- * button.h
+ * button_state.h
  *
- *  Created on: Nov 20, 2021
+ *  Created on: May 4, 2022
  *      Author: simonyu
  */
 
-#ifndef BUTTON_BUTTON_H_
-#define BUTTON_BUTTON_H_
-
-#include <memory>
+#ifndef BUTTON_BUTTON_STATE_H_
+#define BUTTON_BUTTON_STATE_H_
 
 namespace pixel
 {
-class ButtonState;
-class Logger;
-
-class Button
+struct ButtonState
 {
-public:
+    int dial;
+    bool joystick_up;
+    bool joystick_down;
+    bool joystick_left;
+    bool joystick_right;
+    bool joystick_click;
+    bool pushbutton_left;
+    bool pushbutton_right;
 
-    Button();
-
-    void
-    initialize(std::shared_ptr<Logger> logger);
-
-    std::shared_ptr<ButtonState>
-    getButtonState();
-
-    void
-    onJoystickUpChange();
-
-    void
-    onJoystickDownChange();
-
-    void
-    onJoystickLeftChange();
-
-    void
-    onJoystickRightChange();
-
-    void
-    onJoystickClickChange();
-
-    void
-    onPushbuttonLeftChange();
-
-    void
-    onPushbuttonRightChange();
-
-    void
-    update();
-
-private:
-
-    void
-    readDial();
-
-    std::shared_ptr<Logger> logger_;
-    std::shared_ptr<ButtonState> button_state_;
+    inline
+    ButtonState() : dial(0), joystick_up(false), joystick_down(false), joystick_left(false),
+            joystick_right(false), joystick_click(false), pushbutton_left(false),
+            pushbutton_right(false)
+    {
+    }
 };
 }   // namespace pixel
 
-#endif  // BUTTON_BUTTON_H_
+#endif /* BUTTON_BUTTON_STATE_H_ */

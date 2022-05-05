@@ -26,6 +26,7 @@
  */
 
 #include "application/brightness.h"
+#include "button/button_state.h"
 #include "common/platform.h"
 
 namespace pixel
@@ -120,9 +121,10 @@ void
 Brightness::processDial()
 {
     static int brightness_value_last = 0;
+    auto button_state = button_->getButtonState();
 
     brightness_value_ = PlatformNeoPixel::brightness_min
-            + button_state_->dial / static_cast<float>(Platform::analog_max)
+            + button_state->dial / static_cast<float>(Platform::analog_max)
                     * (PlatformNeoPixel::brightness_max - PlatformNeoPixel::brightness_min);
 
     if (!initialized_ || brightness_value_ != brightness_value_last)

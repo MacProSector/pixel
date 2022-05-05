@@ -28,6 +28,8 @@
 #include <Arduino.h>
 
 #include "button/button.h"
+#include "button/button_state.h"
+#include "utility/interrupt.h"
 #include "utility/logger.h"
 #include "common/pin.h"
 
@@ -41,6 +43,7 @@ void
 Button::initialize(std::shared_ptr<Logger> logger)
 {
     logger_ = logger;
+    button_state_ = std::make_shared<ButtonState>();
 
     pinMode(digitalPinToInterrupt(Pin::dial), INPUT);
     pinMode(digitalPinToInterrupt(Pin::joystick_up), INPUT);
@@ -51,76 +54,88 @@ Button::initialize(std::shared_ptr<Logger> logger)
     pinMode(digitalPinToInterrupt(Pin::pushbutton_left), INPUT);
     pinMode(digitalPinToInterrupt(Pin::pushbutton_right), INPUT);
 
-    setDial();
-    setJoystickUp();
-    setJoystickDown();
-    setJoystickLeft();
-    setJoystickRight();
-    setJoystickClick();
-    setPushbuttonLeft();
-    setPushbuttonRight();
+    onJoystickUpChange();
+    onJoystickDownChange();
+    onJoystickLeftChange();
+    onJoystickRightChange();
+    onJoystickClickChange();
+    onPushbuttonLeftChange();
+    onPushbuttonRightChange();
 
-    attachInterrupt(digitalPinToInterrupt(Pin::joystick_up), Button::setJoystickUp, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(Pin::joystick_down), Button::setJoystickDown, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(Pin::joystick_left), Button::setJoystickLeft, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(Pin::joystick_right), Button::setJoystickRight, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(Pin::joystick_click), Button::setJoystickClick, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(Pin::pushbutton_left), Button::setPushbuttonLeft, CHANGE);
-    attachInterrupt(digitalPinToInterrupt(Pin::pushbutton_right), Button::setPushbuttonRight,
-            CHANGE);
+    update();
+
+    attachInterrupt(digitalPinToInterrupt(Pin::joystick_up), joystickUpInterruptHandler, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(Pin::joystick_down), joystickDownInterruptHandler,
+    CHANGE);
+    attachInterrupt(digitalPinToInterrupt(Pin::joystick_left), joystickLeftInterruptHandler,
+    CHANGE);
+    attachInterrupt(digitalPinToInterrupt(Pin::joystick_right), joystickRightInterruptHandler,
+    CHANGE);
+    attachInterrupt(digitalPinToInterrupt(Pin::joystick_click), joystickClickInterruptHandler,
+    CHANGE);
+    attachInterrupt(digitalPinToInterrupt(Pin::pushbutton_left), pushbuttonLeftInterruptHandler,
+    CHANGE);
+    attachInterrupt(digitalPinToInterrupt(Pin::pushbutton_right), pushbuttonRightInterruptHandler,
+    CHANGE);
 }
 
-std::shared_ptr<Button::State>
-Button::getState()
+std::shared_ptr<ButtonState>
+Button::getButtonState()
 {
-    return state_;
-}
-
-void
-Button::setDial()
-{
-    state_->dial = analogRead(Pin::dial);
-}
-
-void
-Button::setJoystickUp()
-{
-    state_->joystick_up = !static_cast<bool>(digitalRead(Pin::joystick_up));
+    return button_state_;
 }
 
 void
-Button::setJoystickDown()
+Button::onJoystickUpChange()
 {
-    state_->joystick_down = !static_cast<bool>(digitalRead(Pin::joystick_down));
+    button_state_->joystick_up = !static_cast<bool>(digitalRead(Pin::joystick_up));
 }
 
 void
-Button::setJoystickLeft()
+Button::onJoystickDownChange()
 {
-    state_->joystick_left = !static_cast<bool>(digitalRead(Pin::joystick_left));
+    button_state_->joystick_down = !static_cast<bool>(digitalRead(Pin::joystick_down));
 }
 
 void
-Button::setJoystickRight()
+Button::onJoystickLeftChange()
 {
-    state_->joystick_right = !static_cast<bool>(digitalRead(Pin::joystick_right));
+    button_state_->joystick_left = !static_cast<bool>(digitalRead(Pin::joystick_left));
 }
 
 void
-Button::setJoystickClick()
+Button::onJoystickRightChange()
 {
-    state_->joystick_click = !static_cast<bool>(digitalRead(Pin::joystick_click));
+    button_state_->joystick_right = !static_cast<bool>(digitalRead(Pin::joystick_right));
 }
 
 void
-Button::setPushbuttonLeft()
+Button::onJoystickClickChange()
 {
-    state_->pushbutton_left = !static_cast<bool>(digitalRead(Pin::pushbutton_left));
+    button_state_->joystick_click = !static_cast<bool>(digitalRead(Pin::joystick_click));
 }
 
 void
-Button::setPushbuttonRight()
+Button::onPushbuttonLeftChange()
 {
-    state_->pushbutton_right = !static_cast<bool>(digitalRead(Pin::pushbutton_right));
+    button_state_->pushbutton_left = !static_cast<bool>(digitalRead(Pin::pushbutton_left));
+}
+
+void
+Button::onPushbuttonRightChange()
+{
+    button_state_->pushbutton_right = !static_cast<bool>(digitalRead(Pin::pushbutton_right));
+}
+
+void
+Button::update()
+{
+    readDial();
+}
+
+void
+Button::readDial()
+{
+    button_state_->dial = analogRead(Pin::dial);
 }
 }   // namespace pixel

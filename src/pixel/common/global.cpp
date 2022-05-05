@@ -19,66 +19,15 @@
  */
 
 /*
- * button.h
+ * global.cpp
  *
- *  Created on: Nov 20, 2021
+ *  Created on: May 5, 2022
  *      Author: simonyu
  */
 
-#ifndef BUTTON_BUTTON_H_
-#define BUTTON_BUTTON_H_
-
-#include <memory>
+#include "common/global.h"
 
 namespace pixel
 {
-class ButtonState;
-class Logger;
-
-class Button
-{
-public:
-
-    Button();
-
-    void
-    initialize(std::shared_ptr<Logger> logger);
-
-    std::shared_ptr<ButtonState>
-    getButtonState();
-
-    void
-    onJoystickUpChange();
-
-    void
-    onJoystickDownChange();
-
-    void
-    onJoystickLeftChange();
-
-    void
-    onJoystickRightChange();
-
-    void
-    onJoystickClickChange();
-
-    void
-    onPushbuttonLeftChange();
-
-    void
-    onPushbuttonRightChange();
-
-    void
-    update();
-
-private:
-
-    void
-    readDial();
-
-    std::shared_ptr<Logger> logger_;
-    std::shared_ptr<ButtonState> button_state_;
-};
+std::shared_ptr<Button> button_;
 }   // namespace pixel
-
-#endif  // BUTTON_BUTTON_H_

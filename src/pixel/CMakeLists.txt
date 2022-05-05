@@ -29,6 +29,7 @@ include_directories(
 # Add subdirectories
 add_subdirectory(application)
 add_subdirectory(button)
+add_subdirectory(common)
 add_subdirectory(display)
 add_subdirectory(main)
 add_subdirectory(utility)

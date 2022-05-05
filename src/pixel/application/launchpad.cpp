@@ -26,6 +26,7 @@
  */
 
 #include "application/launchpad.h"
+#include "button/button_state.h"
 
 namespace pixel
 {
@@ -60,8 +61,6 @@ LaunchPad::initialize()
 void
 LaunchPad::run()
 {
-    button_state_ = button_->getState();
-
     processJoystick();
     processPushbutton();
 
@@ -92,41 +91,42 @@ LaunchPad::processJoystick()
 {
     static bool joystick_click_reset = false;
     static bool joystick_click_last = true; // Require reset after restart
+    auto button_state = button_->getButtonState();
 
     if (!application_launched_)
     {
         static bool joystick_left_last = false;
         static bool joystick_right_last = false;
 
-        if (joystick_left_last && !button_state_->joystick_left && application_index_ > 0)
+        if (joystick_left_last && !button_state->joystick_left && application_index_ > 0)
         {
             application_index_ --;
         }
 
-        if (joystick_right_last && !button_state_->joystick_right
+        if (joystick_right_last && !button_state->joystick_right
                 && application_index_ < applications_.size() - 1)
         {
             application_index_ ++;
         }
 
-        if (!joystick_click_last && button_state_->joystick_click)
+        if (!joystick_click_last && button_state->joystick_click)
         {
             joystick_click_reset = true;
         }
 
         if (!application_launched_ && joystick_click_reset && joystick_click_last
-                && !button_state_->joystick_click)
+                && !button_state->joystick_click)
         {
             application_ = applications_[application_index_];
             application_launched_ = true;
         }
 
-        joystick_left_last = button_state_->joystick_left;
-        joystick_right_last = button_state_->joystick_right;
+        joystick_left_last = button_state->joystick_left;
+        joystick_right_last = button_state->joystick_right;
     }
     else
     {
-        if (button_state_->joystick_click)
+        if (button_state->joystick_click)
         {
             if (!timer_started_)
             {
@@ -150,7 +150,7 @@ LaunchPad::processJoystick()
         }
     }
 
-    joystick_click_last = button_state_->joystick_click;
+    joystick_click_last = button_state->joystick_click;
 }
 
 void
@@ -163,19 +163,20 @@ LaunchPad::processPushbutton()
 
     static bool pushbutton_left_last = false;
     static bool pushbutton_right_last = false;
+    auto button_state = button_->getButtonState();
 
-    if (pushbutton_left_last && !button_state_->pushbutton_left && application_index_ > 0)
+    if (pushbutton_left_last && !button_state->pushbutton_left && application_index_ > 0)
     {
         application_index_ --;
     }
 
-    if (pushbutton_right_last && !button_state_->pushbutton_right
+    if (pushbutton_right_last && !button_state->pushbutton_right
             && application_index_ < applications_.size() - 1)
     {
         application_index_ ++;
     }
 
-    pushbutton_left_last = button_state_->pushbutton_left;
-    pushbutton_right_last = button_state_->pushbutton_right;
+    pushbutton_left_last = button_state->pushbutton_left;
+    pushbutton_right_last = button_state->pushbutton_right;
 }
 }   // namespace pixel
