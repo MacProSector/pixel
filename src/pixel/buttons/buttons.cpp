@@ -7,7 +7,7 @@
 #include <Arduino.h>
 
 #include "buttons/buttons.h"
-#include "logger/logger.h"
+#include "utility/logger.h"
 #include "common/pin.h"
 
 namespace kano_pixel_kit

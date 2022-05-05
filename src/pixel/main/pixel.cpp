@@ -13,7 +13,7 @@
 #include "buttons/buttons.h"
 #include "display/display.h"
 #include "application/launchpad.h"
-#include "logger/logger.h"
+#include "utility/logger.h"
 #include "common/platform.h"
 #include "application/point.h"
 #include "application/restart.h"

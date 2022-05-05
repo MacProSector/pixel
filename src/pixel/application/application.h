@@ -13,7 +13,7 @@
 
 #include "buttons/buttons.h"
 #include "display/display.h"
-#include "logger/logger.h"
+#include "utility/logger.h"
 
 namespace kano_pixel_kit
 {

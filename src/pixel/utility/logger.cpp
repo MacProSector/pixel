@@ -7,7 +7,7 @@
 #include <Arduino.h>
 
 #include "common/platform.h"
-#include "logger/logger.h"
+#include "utility/logger.h"
 
 namespace kano_pixel_kit
 {

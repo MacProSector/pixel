@@ -10,7 +10,7 @@ target_link_libraries(
 	pixel_application
 	pixel_buttons
 	pixel_display
-	pixel_logger
+	pixel_utility
 )
 
 # Set arduino library link targets

@@ -5,7 +5,7 @@
  *      Author: simonyu
  */
 #include "display/display.h"
-#include "logger/logger.h"
+#include "utility/logger.h"
 #include "common/pin.h"
 #include "common/platform.h"
 
