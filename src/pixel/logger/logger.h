@@ -30,19 +30,19 @@ public:
     initialize();
 
     void
-    setLogLevel(const LogLevel &log_level);
+    setLogLevel(const LogLevel& log_level);
 
     void
-    logError(const std::string &log);
+    logError(const std::string& log);
 
     void
-    logWarn(const std::string &log);
+    logWarn(const std::string& log);
 
     void
-    logInfo(const std::string &log);
+    logInfo(const std::string& log);
 
     void
-    logDebug(const std::string &log);
+    logDebug(const std::string& log);
 
 private:
 

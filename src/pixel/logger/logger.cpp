@@ -23,14 +23,14 @@ Logger::initialize()
 }
 
 void
-Logger::setLogLevel(const LogLevel &log_level)
+Logger::setLogLevel(const LogLevel& log_level)
 {
     std::lock_guard<std::mutex> lock(mutex_);
     log_level_ = log_level;
 }
 
 void
-Logger::logError(const std::string &log)
+Logger::logError(const std::string& log)
 {
     if (Serial && log_level_ >= LogLevel::error)
     {
@@ -48,7 +48,7 @@ Logger::logError(const std::string &log)
 }
 
 void
-Logger::logWarn(const std::string &log)
+Logger::logWarn(const std::string& log)
 {
     if (Serial && log_level_ >= LogLevel::warn)
     {
@@ -66,7 +66,7 @@ Logger::logWarn(const std::string &log)
 }
 
 void
-Logger::logInfo(const std::string &log)
+Logger::logInfo(const std::string& log)
 {
     if (Serial && log_level_ >= LogLevel::info)
     {
@@ -84,7 +84,7 @@ Logger::logInfo(const std::string &log)
 }
 
 void
-Logger::logDebug(const std::string &log)
+Logger::logDebug(const std::string& log)
 {
     if (Serial && log_level_ >= LogLevel::debug)
     {

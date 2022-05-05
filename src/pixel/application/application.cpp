@@ -28,14 +28,15 @@ Application::Application(std::shared_ptr<Buttons> buttons, std::shared_ptr<Displ
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
         // Default white border
-        if (i < static_cast<int>(NeoPixel::width) ||
-            i > static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width) ||
-            i % static_cast<int>(NeoPixel::width) == 0 ||
-            i % static_cast<int>(NeoPixel::width) == static_cast<int>(NeoPixel::width) - 1)
+        if (i < static_cast<int>(NeoPixel::width)
+                || i > static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width)
+                || i % static_cast<int>(NeoPixel::width) == 0
+                || i % static_cast<int>(NeoPixel::width) == static_cast<int>(NeoPixel::width) - 1)
         {
-            display_frame_splash_->push_back(Eigen::Vector3i(static_cast<int>(
-                    NeoPixel::value_max), static_cast<int>(NeoPixel::value_max), static_cast<int>(
-                    NeoPixel::value_max)));
+            display_frame_splash_->push_back(
+                    Eigen::Vector3i(static_cast<int>(NeoPixel::value_max),
+                            static_cast<int>(NeoPixel::value_max),
+                            static_cast<int>(NeoPixel::value_max)));
         }
         else
         {

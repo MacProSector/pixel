@@ -9,9 +9,9 @@
 namespace kano_pixel_kit
 {
 LaunchPad::LaunchPad(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(buttons, display, logger), application_index_(
-        0), application_initialized_(false), application_launched_(false), timer_started_(
-        false), timer_start_(0), timer_end_(0)
+        std::shared_ptr<Logger> logger) : Application(buttons, display, logger),
+        application_index_(0), application_initialized_(false), application_launched_(false),
+        timer_started_(false), timer_start_(0), timer_end_(0)
 {
 }
 
@@ -77,16 +77,13 @@ LaunchPad::processJoystick()
         static bool joystick_left_last = false;
         static bool joystick_right_last = false;
 
-        if (joystick_left_last &&
-            !buttons_state_->joystick_left &&
-            application_index_ > 0)
+        if (joystick_left_last && !buttons_state_->joystick_left && application_index_ > 0)
         {
             application_index_ --;
         }
 
-        if (joystick_right_last &&
-            !buttons_state_->joystick_right &&
-            application_index_ < applications_.size() - 1)
+        if (joystick_right_last && !buttons_state_->joystick_right
+                && application_index_ < applications_.size() - 1)
         {
             application_index_ ++;
         }
@@ -96,10 +93,8 @@ LaunchPad::processJoystick()
             joystick_click_reset = true;
         }
 
-        if (!application_launched_ &&
-            joystick_click_reset &&
-            joystick_click_last &&
-            !buttons_state_->joystick_click)
+        if (!application_launched_ && joystick_click_reset && joystick_click_last
+                && !buttons_state_->joystick_click)
         {
             application_ = applications_[application_index_];
             application_launched_ = true;
@@ -148,16 +143,13 @@ LaunchPad::processPushbutton()
     static bool pushbutton_left_last = false;
     static bool pushbutton_right_last = false;
 
-    if (pushbutton_left_last &&
-        !buttons_state_->pushbutton_left &&
-        application_index_ > 0)
+    if (pushbutton_left_last && !buttons_state_->pushbutton_left && application_index_ > 0)
     {
         application_index_ --;
     }
 
-    if (pushbutton_right_last &&
-        !buttons_state_->pushbutton_right &&
-        application_index_ < applications_.size() - 1)
+    if (pushbutton_right_last && !buttons_state_->pushbutton_right
+            && application_index_ < applications_.size() - 1)
     {
         application_index_ ++;
     }

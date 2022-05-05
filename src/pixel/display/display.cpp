@@ -11,16 +11,19 @@
 
 namespace kano_pixel_kit
 {
-Display::Display() : neopixel_(static_cast<int>(NeoPixel::size), static_cast<int>(
-        ESP32Pin::neo_pixel), NEO_GRB + NEO_KHZ800), lock_(
-        mutex_, std::defer_lock), timer_start_(0), timer_end_(0)
+Display::Display() :
+        neopixel_(static_cast<int>(NeoPixel::size), static_cast<int>(ESP32Pin::neo_pixel),
+                NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock), timer_start_(0),
+        timer_end_(0)
 {
     frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        frame_->push_back(Eigen::Vector3i(static_cast<int>(NeoPixel::value_max), static_cast<int>(
-                NeoPixel::value_max), static_cast<int>(NeoPixel::value_max)));
+        frame_->push_back(
+                Eigen::Vector3i(static_cast<int>(NeoPixel::value_max),
+                        static_cast<int>(NeoPixel::value_max),
+                        static_cast<int>(NeoPixel::value_max)));
     }
 }
 
@@ -48,7 +51,7 @@ Display::unlock()
 }
 
 void
-Display::setBrightness(const int &brightness)
+Display::setBrightness(const int& brightness)
 {
     if (brightness < static_cast<int>(NeoPixel::brightness_min))
     {
@@ -75,8 +78,8 @@ Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 
     for (int i = 0; i < static_cast<int>(NeoPixel::size); i ++)
     {
-        neopixel_.setPixelColor(i, neopixel_.Color(
-                frame->at(i).x(), frame->at(i).y(), frame->at(i).z()));
+        neopixel_.setPixelColor(i,
+                neopixel_.Color(frame->at(i).x(), frame->at(i).y(), frame->at(i).z()));
     }
 
     neopixel_.show();

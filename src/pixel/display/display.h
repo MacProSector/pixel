@@ -33,7 +33,7 @@ public:
     unlock();
 
     void
-    setBrightness(const int &brightness);
+    setBrightness(const int& brightness);
 
     void
     setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame);

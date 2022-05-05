@@ -12,8 +12,8 @@
 namespace kano_pixel_kit
 {
 Restart::Restart(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(buttons, display, logger), timer_started_(
-        false), timer_start_(0), timer_end_(0)
+        std::shared_ptr<Logger> logger) : Application(buttons, display, logger),
+        timer_started_(false), timer_start_(0), timer_end_(0)
 {
 }
 

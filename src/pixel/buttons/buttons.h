@@ -29,10 +29,9 @@ public:
         bool pushbutton_right;
 
         inline
-        States() :
-                dial(0), joystick_up(false), joystick_down(false), joystick_left(
-                false), joystick_right(false), joystick_click(false), pushbutton_left(
-                false), pushbutton_right(false)
+        States() : dial(0), joystick_up(false), joystick_down(false), joystick_left(false),
+                joystick_right(false), joystick_click(false), pushbutton_left(false),
+                pushbutton_right(false)
         {
         }
     };

@@ -11,80 +11,100 @@
 namespace kano_pixel_kit
 {
 Brightness::Brightness(std::shared_ptr<Buttons> buttons, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(buttons, display, logger), color_(
-        static_cast<int>(NeoPixel::value_max), static_cast<int>(
-        NeoPixel::value_max), 0), brightness_value_(static_cast<int>(
-        NeoPixel::brightness_min)), initialized_(false)
+        std::shared_ptr<Logger> logger) : Application(buttons, display, logger),
+        color_(static_cast<int>(NeoPixel::value_max), static_cast<int>(NeoPixel::value_max), 0),
+        brightness_value_(static_cast<int>(NeoPixel::brightness_min)), initialized_(false)
 {
     // Center
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(
-            NeoPixel::width) / 2 - 1) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(
-            NeoPixel::width) / 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(
-            NeoPixel::width) / 2 - 1) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(
-            NeoPixel::width) / 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(NeoPixel::width) / 2 - 1) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(NeoPixel::width) / 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(NeoPixel::width) / 2 - 1) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(NeoPixel::width) / 2) = color_;
 
     // Top horizontal leaves
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(
-            NeoPixel::width) / 2 - 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(
-            NeoPixel::width) / 2 - 3) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(
-            NeoPixel::width) / 2 + 1) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(
-            NeoPixel::width) / 2 + 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(NeoPixel::width) / 2 - 2) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(NeoPixel::width) / 2 - 3) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(NeoPixel::width) / 2 + 1) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 - static_cast<int>(NeoPixel::width) / 2 + 2) =
+            color_;
 
     // Bottom horizontal leaves
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(
-            NeoPixel::width) / 2 - 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(
-            NeoPixel::width) / 2 - 3) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(
-            NeoPixel::width) / 2 + 1) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(
-            NeoPixel::width) / 2 + 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(NeoPixel::width) / 2 - 2) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(NeoPixel::width) / 2 - 3) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(NeoPixel::width) / 2 + 1) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) / 2 + static_cast<int>(NeoPixel::width) / 2 + 2) =
+            color_;
 
     // Top vertical leaves
-    display_frame_splash_->at(static_cast<int>(NeoPixel::width) + static_cast<int>(
-            NeoPixel::width) / 2 - 1) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::width) + static_cast<int>(
-            NeoPixel::width) / 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::width) * 2 + static_cast<int>(
-            NeoPixel::width) / 2 - 1) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::width) * 2 + static_cast<int>(
-            NeoPixel::width) / 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::width) + static_cast<int>(NeoPixel::width) / 2 - 1) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::width) + static_cast<int>(NeoPixel::width) / 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::width) * 2 + static_cast<int>(NeoPixel::width) / 2 - 1) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::width) * 2 + static_cast<int>(NeoPixel::width) / 2) = color_;
 
     // Bottom vertical leaves
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) - static_cast<int>(
-            NeoPixel::width) - static_cast<int>(NeoPixel::width) / 2 - 1) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) - static_cast<int>(
-            NeoPixel::width) - static_cast<int>(NeoPixel::width) / 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) - static_cast<int>(
-            NeoPixel::width) * 2 - static_cast<int>(NeoPixel::width) / 2 - 1) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) - static_cast<int>(
-            NeoPixel::width) * 2 - static_cast<int>(NeoPixel::width) / 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width)
+                    - static_cast<int>(NeoPixel::width) / 2 - 1) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width)
+                    - static_cast<int>(NeoPixel::width) / 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width) * 2
+                    - static_cast<int>(NeoPixel::width) / 2 - 1) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width) * 2
+                    - static_cast<int>(NeoPixel::width) / 2) = color_;
 
     // Top diagonal leaves
-    display_frame_splash_->at(static_cast<int>(NeoPixel::width) + static_cast<int>(
-            NeoPixel::width) / 2 - 3) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::width) + static_cast<int>(
-            NeoPixel::width) / 2 + 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::width) * 2 + static_cast<int>(
-            NeoPixel::width) / 2 - 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::width) * 2 + static_cast<int>(
-            NeoPixel::width) / 2 + 1) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::width) + static_cast<int>(NeoPixel::width) / 2 - 3) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::width) + static_cast<int>(NeoPixel::width) / 2 + 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::width) * 2 + static_cast<int>(NeoPixel::width) / 2 - 2) =
+            color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::width) * 2 + static_cast<int>(NeoPixel::width) / 2 + 1) =
+            color_;
 
     // Bottom diagonal leaves
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) - static_cast<int>(
-            NeoPixel::width) - static_cast<int>(NeoPixel::width) / 2 - 3) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) - static_cast<int>(
-            NeoPixel::width) - static_cast<int>(NeoPixel::width) / 2 + 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) - static_cast<int>(
-            NeoPixel::width) * 2 - static_cast<int>(NeoPixel::width) / 2 - 2) = color_;
-    display_frame_splash_->at(static_cast<int>(NeoPixel::size) - static_cast<int>(
-            NeoPixel::width) * 2 - static_cast<int>(NeoPixel::width) / 2 + 1) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width)
+                    - static_cast<int>(NeoPixel::width) / 2 - 3) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width)
+                    - static_cast<int>(NeoPixel::width) / 2 + 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width) * 2
+                    - static_cast<int>(NeoPixel::width) / 2 - 2) = color_;
+    display_frame_splash_->at(
+            static_cast<int>(NeoPixel::size) - static_cast<int>(NeoPixel::width) * 2
+                    - static_cast<int>(NeoPixel::width) / 2 + 1) = color_;
 }
 
 void
@@ -109,10 +129,10 @@ Brightness::processDial()
 {
     static int brightness_value_last = 0;
 
-    brightness_value_ = static_cast<int>(
-            NeoPixel::brightness_min) + buttons_state_->dial / static_cast<float>(
-            ESP32Platform::analog_max) * (static_cast<int>(NeoPixel::brightness_max) - static_cast<int>(
-            NeoPixel::brightness_min));
+    brightness_value_ = static_cast<int>(NeoPixel::brightness_min)
+            + buttons_state_->dial / static_cast<float>(ESP32Platform::analog_max)
+                    * (static_cast<int>(NeoPixel::brightness_max)
+                            - static_cast<int>(NeoPixel::brightness_min));
 
     if (!initialized_ || brightness_value_ != brightness_value_last)
     {
@@ -129,10 +149,11 @@ Brightness::displayBrightness()
 
     if (!initialized_ || brightness_value_ != brightness_value_last)
     {
-        int brightness_value_screen = static_cast<int>((brightness_value_ - static_cast<float>(
-                NeoPixel::brightness_min)) / (static_cast<float>(
-                NeoPixel::brightness_max) - static_cast<float>(
-                NeoPixel::brightness_min)) * static_cast<float>(NeoPixel::width));
+        int brightness_value_screen = static_cast<int>((brightness_value_
+                - static_cast<float>(NeoPixel::brightness_min))
+                / (static_cast<float>(NeoPixel::brightness_max)
+                        - static_cast<float>(NeoPixel::brightness_min))
+                * static_cast<float>(NeoPixel::width));
 
         std::fill(display_frame_->begin(), display_frame_->end(), Eigen::Vector3i(0, 0, 0));
 
