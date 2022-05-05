@@ -4,7 +4,7 @@
  *  Created on: Nov 20, 2021
  *      Author: simonyu
  */
-#include "../applications/launchpad.h"
+#include "application/launchpad.h"
 
 namespace kano_pixel_kit
 {

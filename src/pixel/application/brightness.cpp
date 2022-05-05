@@ -4,9 +4,9 @@
  *  Created on: Nov 30, 2021
  *      Author: simonyu
  */
-#include "../applications/brightness.h"
-#include "../devices/esp32.h"
-#include "../devices/neopixel.h"
+#include "application/brightness.h"
+#include "devices/esp32.h"
+#include "devices/neopixel.h"
 
 namespace kano_pixel_kit
 {

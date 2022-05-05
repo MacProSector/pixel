@@ -7,7 +7,7 @@
 #ifndef SRC_KANO_PIXEL_KIT_APPLICATIONS_LAUNCHPAD_H_
 #define SRC_KANO_PIXEL_KIT_APPLICATIONS_LAUNCHPAD_H_
 
-#include "../applications/application.h"
+#include "application/application.h"
 
 namespace kano_pixel_kit
 {

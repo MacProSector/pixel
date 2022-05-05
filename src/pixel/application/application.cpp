@@ -4,8 +4,8 @@
  *  Created on: Nov 30, 2021
  *      Author: simonyu
  */
-#include "../applications/application.h"
-#include "../devices/neopixel.h"
+#include "application/application.h"
+#include "devices/neopixel.h"
 
 namespace kano_pixel_kit
 {

@@ -9,14 +9,14 @@
 #include <freertos/task.h>
 #include <freertos/portmacro.h>
 
-#include "applications/brightness.h"
+#include "application/brightness.h"
 #include "buttons/buttons.h"
 #include "display/display.h"
 #include "devices/esp32.h"
-#include "applications/launchpad.h"
+#include "application/launchpad.h"
 #include "logger/logger.h"
-#include "applications/point.h"
-#include "applications/restart.h"
+#include "application/point.h"
+#include "application/restart.h"
 
 using namespace kano_pixel_kit;
 

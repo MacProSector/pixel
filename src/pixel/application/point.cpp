@@ -4,9 +4,9 @@
  *  Created on: Nov 20, 2021
  *      Author: simonyu
  */
-#include "../devices/esp32.h"
-#include "../devices/neopixel.h"
-#include "../applications/point.h"
+#include "devices/esp32.h"
+#include "devices/neopixel.h"
+#include "application/point.h"
 
 namespace kano_pixel_kit
 {

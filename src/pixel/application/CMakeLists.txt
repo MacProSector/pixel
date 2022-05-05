@@ -1,6 +1,6 @@
 # Add executables
 add_library(
-	pixel_applications
+	pixel_application
 	application.cpp
 	brightness.cpp
 	launchpad.cpp
@@ -10,7 +10,7 @@ add_library(
 
 # Set library link targets
 target_link_libraries(
-	pixel_applications
+	pixel_application
 	pixel_buttons
 	pixel_display
 	pixel_logger
@@ -18,6 +18,6 @@ target_link_libraries(
 
 # Set arduino library link targets
 target_link_arduino_libraries(
-	pixel_applications
+	pixel_application
 	core
 )

@@ -11,9 +11,9 @@
 #include <memory>
 #include <vector>
 
-#include "../buttons/buttons.h"
-#include "../display/display.h"
-#include "../logger/logger.h"
+#include "buttons/buttons.h"
+#include "display/display.h"
+#include "logger/logger.h"
 
 namespace kano_pixel_kit
 {
