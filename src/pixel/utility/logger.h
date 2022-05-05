@@ -1,54 +1,168 @@
 /*
- * logger.h
+ *  Copyright (C) 2022  Simon Yu
  *
- *  Created on: Nov 19, 2021
- *      Author: simonyu
+ *  Developed by:   Simon Yu (yujunda@icloud.com)
+ *                  https://www.simonyu.net/
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-#ifndef SRC_KANO_PIXEL_KIT_LOGGER_LOGGER_H_
-#define SRC_KANO_PIXEL_KIT_LOGGER_LOGGER_H_
 
-#include <memory>
-#include <mutex>
+/**
+ *  @file   logger.h
+ *  @author Simon Yu
+ *  @date   11/19/2021
+ *  @brief  Logger class header.
+ *
+ *  This file defines the logger class.
+ */
 
+/*
+ *  Include guard.
+ */
+#ifndef UTILITY_LOGGER_H_
+#define UTILITY_LOGGER_H_
+
+/*
+ *  External headers.
+ */
+#include <Arduino.h>
+#include <string>
+
+/*
+ *  kano_pixel_kit namespace.
+ */
 namespace kano_pixel_kit
 {
+/**
+ *  @brief  Logger class.
+ *
+ *  This class provides functions for
+ *  logging to the serial with log levels.
+ */
 class Logger
 {
 public:
 
+    /**
+     *  @brief  Log level enum class.
+     *
+     *  This enum class contains log levels.
+     */
     enum class LogLevel : int
     {
-        error = 0,
-        warn,
-        info,
-        debug
+        error = 0,  //!< Errors.
+        warn,   //!< Warnings.
+        info,   //!< Information.
+        debug   //!< Debugging.
     };
 
+    /**
+     *  @brief  Logger class constructor.
+     *
+     *  This constructor initializes all class member variables.
+     *  Addtionally, the constructor initializes the platform
+     *  serial connection at the baud rate defined in the
+     *  PlatformSerial enum.
+     */
     Logger();
 
-    void
-    initialize();
+    /**
+     *  @return Log level enum object.
+     *  @brief  Get the logger status.
+     *
+     *  This function returns the worst log level ever occurred
+     *  (only either warn or error.)
+     */
+    LogLevel
+    getStatus() const;
 
+    /**
+     *  @param  log_level Log level enum object.
+     *  @brief  Set the log level.
+     *
+     *  This function sets the log level.
+     */
     void
-    setLogLevel(const LogLevel& log_level);
+    setLogLevel(const LogLevel &log_level);
 
+    /**
+     *  @param  log Log message string.
+     *  @brief  Log raw message.
+     *
+     *  This function logs the given message as is.
+     *  The function always prints a new line.
+     *  The message is logged regardless of the log level.
+     */
     void
-    logError(const std::string& log);
+    logRaw(const std::string &log);
 
+    /**
+     *  @param  log Log message string.
+     *  @brief  Log error message.
+     *
+     *  This function logs the message in error format.
+     *  A period is automatically appended to the message.
+     *  The function always prints a new line.
+     *  The message is logged regardless of the log level.
+     */
     void
-    logWarn(const std::string& log);
+    logError(const std::string &log);
 
+    /**
+     *  @param  log Log message string.
+     *  @brief  Log warning message.
+     *
+     *  This function logs the message in warning format.
+     *  A period is automatically appended to the message.
+     *  The function always prints a new line.
+     *  The message is logged only if the log level is
+     *  warn or better.
+     */
     void
-    logInfo(const std::string& log);
+    logWarn(const std::string &log);
 
+    /**
+     *  @param  log Log message string.
+     *  @brief  Log information message.
+     *
+     *  This function logs the message in information format.
+     *  A period is automatically appended to the message.
+     *  The function always prints a new line.
+     *  The message is logged only if the log level is
+     *  info or better.
+     */
     void
-    logDebug(const std::string& log);
+    logInfo(const std::string &log);
+
+    /**
+     *  @param  log Log message string.
+     *  @brief  Log debugging message.
+     *
+     *  This function logs the message in debugging format.
+     *  A period is automatically appended to the message.
+     *  The function always prints a new line.
+     *  The message is logged only if the log level is
+     *  debug.
+     */
+    void
+    logDebug(const std::string &log);
 
 private:
 
-    LogLevel log_level_;
-    std::mutex mutex_;
+    LogLevel log_level_;    //!< Log level enum object.
+    LogLevel status_;   //!< Status log level enum object.
 };
-} // namespace kano_pixel_kit
+}   // namespace kano_pixel_kit
 
-#endif /* SRC_KANO_PIXEL_KIT_LOGGER_LOGGER_H_ */
+#endif  // UTILITY_LOGGER_H_
