@@ -9,13 +9,13 @@
 
 namespace kano_pixel_kit
 {
-enum class Platform
+enum Platform
 {
     cpu_cores = 2,
     analog_max = 4095
 };
 
-enum class PlatformNeoPixel
+enum PlatformNeoPixel
 {
     height = 8,
     width = 16,
@@ -25,7 +25,7 @@ enum class PlatformNeoPixel
     brightness_max = 30
 };
 
-enum class PlatformSerial
+enum PlatformSerial
 {
     baud_rate = 115200
 };

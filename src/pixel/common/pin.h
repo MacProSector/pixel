@@ -10,7 +10,7 @@
 
 namespace kano_pixel_kit
 {
-enum class Pin
+enum Pin
 {
     neo_pixel = 4,
     pushbutton_right = 18,

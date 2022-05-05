@@ -23,9 +23,9 @@ Restart::initialize()
     button_state_ = button_->getState();
     display_frame_->clear();
 
-    for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
+    for (int i = 0; i < PlatformNeoPixel::size; i ++)
     {
-        display_frame_->push_back(Eigen::Vector3i(static_cast<int>(PlatformNeoPixel::value_max), 0, 0));
+        display_frame_->push_back(Eigen::Vector3i(PlatformNeoPixel::value_max, 0, 0));
     }
 }
 

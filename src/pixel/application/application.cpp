@@ -20,23 +20,21 @@ Application::Application(std::shared_ptr<Button> buttons, std::shared_ptr<Displa
     display_frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
     display_frame_splash_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 
-    for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
+    for (int i = 0; i < PlatformNeoPixel::size; i ++)
     {
         display_frame_->push_back(Eigen::Vector3i(0, 0, 0));
     }
 
-    for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
+    for (int i = 0; i < PlatformNeoPixel::size; i ++)
     {
         // Default white border
-        if (i < static_cast<int>(PlatformNeoPixel::width)
-                || i > static_cast<int>(PlatformNeoPixel::size) - static_cast<int>(PlatformNeoPixel::width)
-                || i % static_cast<int>(PlatformNeoPixel::width) == 0
-                || i % static_cast<int>(PlatformNeoPixel::width) == static_cast<int>(PlatformNeoPixel::width) - 1)
+        if (i < PlatformNeoPixel::width || i > PlatformNeoPixel::size - PlatformNeoPixel::width
+                || i % PlatformNeoPixel::width == 0
+                || i % PlatformNeoPixel::width == PlatformNeoPixel::width - 1)
         {
             display_frame_splash_->push_back(
-                    Eigen::Vector3i(static_cast<int>(PlatformNeoPixel::value_max),
-                            static_cast<int>(PlatformNeoPixel::value_max),
-                            static_cast<int>(PlatformNeoPixel::value_max)));
+                    Eigen::Vector3i(PlatformNeoPixel::value_max, PlatformNeoPixel::value_max,
+                            PlatformNeoPixel::value_max));
         }
         else
         {

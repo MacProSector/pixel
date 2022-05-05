@@ -11,18 +11,16 @@
 
 namespace kano_pixel_kit
 {
-Display::Display() :
-        neopixel_(static_cast<int>(PlatformNeoPixel::size), static_cast<int>(Pin::neo_pixel),
-        NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock), timer_start_(0), timer_end_(0)
+Display::Display() : neopixel_(PlatformNeoPixel::size, Pin::neo_pixel,
+NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock), timer_start_(0), timer_end_(0)
 {
     frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 
-    for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
+    for (int i = 0; i < PlatformNeoPixel::size; i ++)
     {
         frame_->push_back(
-                Eigen::Vector3i(static_cast<int>(PlatformNeoPixel::value_max),
-                        static_cast<int>(PlatformNeoPixel::value_max),
-                        static_cast<int>(PlatformNeoPixel::value_max)));
+                Eigen::Vector3i(PlatformNeoPixel::value_max, PlatformNeoPixel::value_max,
+                        PlatformNeoPixel::value_max));
     }
 }
 
@@ -33,7 +31,7 @@ Display::initialize(std::shared_ptr<Logger> logger)
     logger_ = logger;
 
     clear();
-    setBrightness(static_cast<int>(PlatformNeoPixel::brightness_min));
+    setBrightness(PlatformNeoPixel::brightness_min);
     displayStartScreen();
 }
 
@@ -52,13 +50,13 @@ Display::unlock()
 void
 Display::setBrightness(const int& brightness)
 {
-    if (brightness < static_cast<int>(PlatformNeoPixel::brightness_min))
+    if (brightness < PlatformNeoPixel::brightness_min)
     {
-        neopixel_.setBrightness(static_cast<int>(PlatformNeoPixel::brightness_min));
+        neopixel_.setBrightness(PlatformNeoPixel::brightness_min);
     }
-    else if (brightness > static_cast<int>(PlatformNeoPixel::brightness_max))
+    else if (brightness > PlatformNeoPixel::brightness_max)
     {
-        neopixel_.setBrightness(static_cast<int>(PlatformNeoPixel::brightness_max));
+        neopixel_.setBrightness(PlatformNeoPixel::brightness_max);
     }
     else
     {
@@ -69,13 +67,13 @@ Display::setBrightness(const int& brightness)
 void
 Display::setFrame(std::shared_ptr<std::vector<Eigen::Vector3i>> frame)
 {
-    if (frame->size() != static_cast<int>(PlatformNeoPixel::size))
+    if (frame->size() != PlatformNeoPixel::size)
     {
         logger_->logError("Invalid frame size");
         return;
     }
 
-    for (int i = 0; i < static_cast<int>(PlatformNeoPixel::size); i ++)
+    for (int i = 0; i < PlatformNeoPixel::size; i ++)
     {
         neopixel_.setPixelColor(i,
                 neopixel_.Color(frame->at(i).x(), frame->at(i).y(), frame->at(i).z()));
