@@ -29,9 +29,9 @@
 
 #include "button/button.h"
 #include "button/button_state.h"
+#include "common/pin.h"
 #include "utility/interrupt.h"
 #include "utility/logger.h"
-#include "common/pin.h"
 
 namespace pixel
 {

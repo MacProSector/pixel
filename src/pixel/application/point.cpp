@@ -25,9 +25,9 @@
  *      Author: simonyu
  */
 
-#include "common/platform.h"
-#include "button/button_state.h"
 #include "application/point.h"
+#include "button/button_state.h"
+#include "common/platform.h"
 
 namespace pixel
 {

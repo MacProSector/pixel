@@ -30,8 +30,8 @@
 /*
  *  Project headers.
  */
-#include "utility/logger.h"
 #include "common/platform.h"
+#include "utility/logger.h"
 
 /*
  *  pixel namespace.

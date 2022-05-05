@@ -27,9 +27,9 @@
 
 #include <Arduino.h>
 
+#include "application/restart.h"
 #include "button/button_state.h"
 #include "common/platform.h"
-#include "application/restart.h"
 
 namespace pixel
 {

@@ -29,7 +29,6 @@
 
 namespace pixel
 {
-
 void
 joystickUpInterruptHandler()
 {
