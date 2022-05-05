@@ -11,7 +11,7 @@
 
 ## Prerequisites
 
-Ensure the following prerequisites are installed:
+Ensure the following prerequisites are present or satisfied:
 
 * Kano Pixel Kit (retail version).
 * Linux operating system.

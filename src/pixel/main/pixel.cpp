@@ -17,14 +17,7 @@
 #include "applications/point.h"
 #include "applications/restart.h"
 
-using kano_pixel_kit::Brightness;
-using kano_pixel_kit::Buttons;
-using kano_pixel_kit::Display;
-using kano_pixel_kit::ESP32Platform;
-using kano_pixel_kit::LaunchPad;
-using kano_pixel_kit::Logger;
-using kano_pixel_kit::Point;
-using kano_pixel_kit::Restart;
+using namespace kano_pixel_kit;
 
 std::shared_ptr<Brightness> brightness_;
 std::shared_ptr<Buttons> buttons_;
@@ -49,7 +42,8 @@ waitOnBarrier()
     while (task_barrier_)
     {
         vTaskDelay(10);
-    };
+    }
+    ;
 
     const int task_core_index = xPortGetCoreID();
     const auto task_name_core = task_names_core_[task_core_index];
@@ -60,13 +54,13 @@ waitOnBarrier()
 
 // Applications, services, etc.
 void
-taskCore0(void *pvParameters)
+taskCore0(void* pvParameters)
 {
     waitOnBarrier();
 
     launchpad_->initialize();
 
-    for(;;)
+    for (;;)
     {
         launchpad_->run();
         vTaskDelay(10);
@@ -75,14 +69,14 @@ taskCore0(void *pvParameters)
 
 // Events, interrupts, etc.
 void
-taskCore1(void *pvParameters)
+taskCore1(void* pvParameters)
 {
     buttons_->initialize(logger_);
     display_->initialize(logger_);
 
     waitOnBarrier();
 
-    for(;;)
+    for (;;)
     {
         buttons_->setDial();
         vTaskDelay(10);
@@ -109,7 +103,7 @@ setup()
     launchpad_->addService(restart_);
 
     task_barrier_ = static_cast<int>(ESP32Platform::cpu_cores);
-    task_names_core_ = {"Core 0",  "Core 1"};
+    task_names_core_ = {"Core 0", "Core 1"};
 
     xTaskCreatePinnedToCore(taskCore0, task_names_core_[0].c_str(), 2048, NULL, 3, NULL, 0);
     xTaskCreatePinnedToCore(taskCore1, task_names_core_[1].c_str(), 2048, NULL, 3, NULL, 1);
