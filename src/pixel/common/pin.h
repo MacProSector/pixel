@@ -44,4 +44,4 @@ enum Pin
 };
 }   // namespace pixel
 
-#endif /* COMMON_PIN_H_ */
+#endif  // COMMON_PIN_H_

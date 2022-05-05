@@ -25,8 +25,8 @@
  *      Author: simonyu
  */
 
-#ifndef SRC_KANO_PIXEL_KIT_DEVICES_ESP32_H_
-#define SRC_KANO_PIXEL_KIT_DEVICES_ESP32_H_
+#ifndef COMMON_PLATFORM_H_
+#define COMMON_PLATFORM_H_
 
 namespace pixel
 {
@@ -52,4 +52,4 @@ enum PlatformSerial
 };
 }   // namespace pixel
 
-#endif /* SRC_KANO_PIXEL_KIT_DEVICES_ESP32_H_ */
+#endif  // COMMON_PLATFORM_H_

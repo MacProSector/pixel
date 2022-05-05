@@ -25,8 +25,8 @@
  *      Author: simonyu
  */
 
-#ifndef SRC_KANO_PIXEL_KIT_APPLICATIONS_APPLICATION_H_
-#define SRC_KANO_PIXEL_KIT_APPLICATIONS_APPLICATION_H_
+#ifndef APPLICATION_APPLICATION_H_
+#define APPLICATION_APPLICATION_H_
 
 #include <ArduinoEigenDense.h>
 #include <memory>
@@ -65,4 +65,4 @@ protected:
 };
 }   // namespace pixel
 
-#endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_APPLICATION_H_ */
+#endif  // APPLICATION_APPLICATION_H_

@@ -25,8 +25,8 @@
  *      Author: simonyu
  */
 
-#ifndef SRC_KANO_PIXEL_KIT_DISPLAY_DISPLAY_H_
-#define SRC_KANO_PIXEL_KIT_DISPLAY_DISPLAY_H_
+#ifndef DISPLAY_DISPLAY_H_
+#define DISPLAY_DISPLAY_H_
 
 #include <Adafruit_NeoPixel.h>
 #include <ArduinoEigenDense.h>
@@ -82,4 +82,4 @@ private:
 };
 }   // namespace pixel
 
-#endif /* SRC_KANO_PIXEL_KIT_DISPLAY_DISPLAY_H_ */
+#endif  // DISPLAY_DISPLAY_H_

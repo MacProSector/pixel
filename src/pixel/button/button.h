@@ -25,8 +25,8 @@
  *      Author: simonyu
  */
 
-#ifndef SRC_KANO_PIXEL_KIT_BUTTONS_BUTTONS_H_
-#define SRC_KANO_PIXEL_KIT_BUTTONS_BUTTONS_H_
+#ifndef BUTTON_BUTTON_H_
+#define BUTTON_BUTTON_H_
 
 #include <memory>
 
@@ -97,4 +97,4 @@ private:
 };
 }   // namespace pixel
 
-#endif /* SRC_KANO_PIXEL_KIT_BUTTONS_BUTTONS_H_ */
+#endif  // BUTTON_BUTTON_H_

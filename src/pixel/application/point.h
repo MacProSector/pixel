@@ -25,8 +25,8 @@
  *      Author: simonyu
  */
 
-#ifndef SRC_KANO_PIXEL_KIT_APPLICATIONS_POINT_H_
-#define SRC_KANO_PIXEL_KIT_APPLICATIONS_POINT_H_
+#ifndef APPLICATION_POINT_H_
+#define APPLICATION_POINT_H_
 
 #include "application/application.h"
 
@@ -64,4 +64,4 @@ private:
 };
 }   // namespace pixel
 
-#endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_POINT_H_ */
+#endif  // APPLICATION_POINT_H_

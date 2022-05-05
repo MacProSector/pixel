@@ -25,8 +25,8 @@
  *      Author: simonyu
  */
 
-#ifndef SRC_KANO_PIXEL_KIT_APPLICATIONS_RESTART_H_
-#define SRC_KANO_PIXEL_KIT_APPLICATIONS_RESTART_H_
+#ifndef APPLICATION_RESTART_H_
+#define APPLICATION_RESTART_H_
 
 #include "application/application.h"
 
@@ -56,4 +56,4 @@ private:
 };
 }   // namespace pixel
 
-#endif /* SRC_KANO_PIXEL_KIT_APPLICATIONS_RESTART_H_ */
+#endif  // APPLICATION_RESTART_H_
