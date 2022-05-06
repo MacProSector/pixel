@@ -28,11 +28,25 @@
 #ifndef COMMON_GLOBAL_H_
 #define COMMON_GLOBAL_H_
 
-#include "button/button.h"
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace pixel
 {
+class Barrier;
+class Button;
+class Display;
+class LaunchPad;
+class Logger;
+
+extern std::shared_ptr<Barrier> barrier_task_;
 extern std::shared_ptr<Button> button_;
+extern std::shared_ptr<Display> display_;
+extern std::shared_ptr<LaunchPad> launchpad_;
+extern std::shared_ptr<Logger> logger_;
+
+extern std::vector<std::string> task_names_;
 }   // namespace pixel
 
 #endif /* COMMON_GLOBAL_H_ */

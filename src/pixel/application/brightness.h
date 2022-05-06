@@ -36,8 +36,7 @@ class Brightness : public Application
 {
 public:
 
-    Brightness(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
-            std::shared_ptr<Logger> logger);
+    Brightness();
 
     void
     initialize() override;

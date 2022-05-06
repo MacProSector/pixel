@@ -12,6 +12,7 @@ add_library(
 target_link_libraries(
 	pixel_application
 	pixel_button
+	pixel_common
 	pixel_display
 	pixel_utility
 )

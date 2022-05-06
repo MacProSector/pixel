@@ -27,7 +27,6 @@
 
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
-#include <freertos/portmacro.h>
 
 #include "application/brightness.h"
 #include "application/launchpad.h"
@@ -37,92 +36,31 @@
 #include "common/global.h"
 #include "common/platform.h"
 #include "display/display.h"
+#include "utility/barrier.h"
 #include "utility/logger.h"
+#include "utility/task.h"
 
 using namespace pixel;
-
-std::shared_ptr<Brightness> brightness_;
-std::shared_ptr<Display> display_;
-std::shared_ptr<LaunchPad> launchpad_;
-std::shared_ptr<Logger> logger_;
-std::shared_ptr<Point> point_;
-std::shared_ptr<Restart> restart_;
-
-volatile int task_barrier_;
-std::mutex task_barrier_mutex_;
-std::vector<std::string> task_names_core_;
-
-void
-waitOnBarrier()
-{
-    std::unique_lock<std::mutex> lock(task_barrier_mutex_);
-    task_barrier_ --;
-    lock.unlock();
-
-    while (task_barrier_)
-    {
-        vTaskDelay(10);
-    }
-
-    const int task_core_index = xPortGetCoreID();
-    const auto task_name_core = task_names_core_[task_core_index];
-    const std::string task_core = std::to_string(task_core_index);
-
-    logger_->logInfo("Started task \"" + task_name_core + "\" on core " + task_core);
-}
-
-// Applications, services, etc.
-void
-taskCore0(void* pvParameters)
-{
-    waitOnBarrier();
-
-    launchpad_->initialize();
-
-    for (;;)
-    {
-        launchpad_->run();
-        vTaskDelay(10);
-    }
-}
-
-// Events, interrupts, etc.
-void
-taskCore1(void* pvParameters)
-{
-    button_->initialize(logger_);
-    display_->initialize(logger_);
-
-    waitOnBarrier();
-
-    for (;;)
-    {
-        button_->update();
-        vTaskDelay(10);
-    }
-}
 
 void
 setup()
 {
+    barrier_task_ = std::make_shared<Barrier>(Platform::cpu_cores);
     button_ = std::make_shared<Button>();
     display_ = std::make_shared<Display>();
+    launchpad_ = std::make_shared<LaunchPad>();
     logger_ = std::make_shared<Logger>();
 
-    brightness_ = std::make_shared<Brightness>(button_, display_, logger_);
-    launchpad_ = std::make_shared<LaunchPad>(button_, display_, logger_);
-    point_ = std::make_shared<Point>(button_, display_, logger_);
-    restart_ = std::make_shared<Restart>(button_, display_, logger_);
+    auto brightness = std::make_shared<Brightness>();
+    auto point = std::make_shared<Point>();
+    auto restart = std::make_shared<Restart>();
 
-    launchpad_->addApplication(point_);
-    launchpad_->addApplication(brightness_);
-    launchpad_->addService(restart_);
+    launchpad_->addApplication(point);
+    launchpad_->addApplication(brightness);
+    launchpad_->addService(restart);
 
-    task_barrier_ = Platform::cpu_cores;
-    task_names_core_ = {"Core 0", "Core 1"};
-
-    xTaskCreatePinnedToCore(taskCore0, task_names_core_[0].c_str(), 2048, NULL, 3, NULL, 0);
-    xTaskCreatePinnedToCore(taskCore1, task_names_core_[1].c_str(), 2048, NULL, 3, NULL, 1);
+    xTaskCreatePinnedToCore(taskCore0, task_names_[0].c_str(), 2048, NULL, 3, NULL, 0);
+    xTaskCreatePinnedToCore(taskCore1, task_names_[1].c_str(), 2048, NULL, 3, NULL, 1);
 }
 
 void

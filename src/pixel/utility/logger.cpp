@@ -28,6 +28,11 @@
  */
 
 /*
+ *  External headers.
+ */
+#include <Arduino.h>
+
+/*
  *  Project headers.
  */
 #include "common/platform.h"

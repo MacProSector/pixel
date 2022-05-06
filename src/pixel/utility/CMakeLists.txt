@@ -1,8 +1,10 @@
 # Add executables
 add_library(
 	pixel_utility
+	barrier.cpp
 	interrupt.cpp
 	logger.cpp
+	task.cpp
 )
 
 # Set library link targets

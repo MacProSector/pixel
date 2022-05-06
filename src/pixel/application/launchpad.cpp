@@ -26,14 +26,15 @@
  */
 
 #include "application/launchpad.h"
+#include "button/button.h"
 #include "button/button_state.h"
+#include "common/global.h"
+#include "display/display.h"
 
 namespace pixel
 {
-LaunchPad::LaunchPad(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(button, display, logger),
-        application_index_(0), application_initialized_(false), application_launched_(false),
-        timer_started_(false), timer_start_(0), timer_end_(0)
+LaunchPad::LaunchPad() : application_index_(0), application_initialized_(false),
+        application_launched_(false), timer_started_(false), timer_start_(0), timer_end_(0)
 {
 }
 

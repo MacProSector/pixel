@@ -26,14 +26,15 @@
  */
 
 #include "application/point.h"
+#include "button/button.h"
 #include "button/button_state.h"
+#include "common/global.h"
 #include "common/platform.h"
+#include "display/display.h"
 
 namespace pixel
 {
-Point::Point(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(button, display, logger),
-        color_dial_(Eigen::Vector3i(0, 0, PlatformNeoPixel::value_max)),
+Point::Point() : color_dial_(Eigen::Vector3i(0, 0, PlatformNeoPixel::value_max)),
         color_buttons_(Eigen::Vector3i(PlatformNeoPixel::value_max, 0, 0)), pixel_index_dial_(0),
         pixel_index_buttons_(0), set_display_frame_(false)
 {

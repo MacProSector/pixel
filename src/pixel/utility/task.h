@@ -19,48 +19,27 @@
  */
 
 /*
- * point.h
+ * task.h
  *
- *  Created on: Nov 20, 2021
+ *  Created on: May 6, 2022
  *      Author: simonyu
  */
 
-#ifndef APPLICATION_POINT_H_
-#define APPLICATION_POINT_H_
-
-#include "application/application.h"
+#ifndef UTILITY_TASK_H_
+#define UTILITY_TASK_H_
 
 namespace pixel
 {
-class Point : public Application
-{
-public:
+// Applications, services, etc.
+void
+taskCore0(void* pvParameters);
 
-    Point();
+// Events, interrupts, etc.
+void
+taskCore1(void* pvParameters);
 
-    void
-    initialize() override;
-
-    void
-    run() override;
-
-private:
-
-    void
-    processDial();
-
-    void
-    processJoystick();
-
-    void
-    processPushbutton();
-
-    Eigen::Vector3i color_dial_;
-    Eigen::Vector3i color_buttons_;
-    int pixel_index_dial_;
-    int pixel_index_buttons_;
-    bool set_display_frame_;
-};
+void
+logTaskStart();
 }   // namespace pixel
 
-#endif  // APPLICATION_POINT_H_
+#endif  // UTILITY_TASK_H_

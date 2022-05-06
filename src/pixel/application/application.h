@@ -32,18 +32,13 @@
 #include <memory>
 #include <vector>
 
-#include "button/button.h"
-#include "display/display.h"
-#include "utility/logger.h"
-
 namespace pixel
 {
 class Application
 {
 public:
 
-    Application(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
-            std::shared_ptr<Logger> logger);
+    Application();
 
     virtual
     ~Application() = default;
@@ -59,9 +54,6 @@ public:
 
 protected:
 
-    std::shared_ptr<Button> button_;
-    std::shared_ptr<Display> display_;
-    std::shared_ptr<Logger> logger_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> display_frame_splash_;
 };

@@ -19,48 +19,46 @@
  */
 
 /*
- * point.h
+ * barrier.cpp
  *
- *  Created on: Nov 20, 2021
+ *  Created on: May 5, 2022
  *      Author: simonyu
  */
 
-#ifndef APPLICATION_POINT_H_
-#define APPLICATION_POINT_H_
-
-#include "application/application.h"
+#include "utility/barrier.h"
 
 namespace pixel
 {
-class Point : public Application
+Barrier::Barrier(const std::size_t& count) : count_(count), lock_(mutex_, std::defer_lock)
 {
-public:
+}
 
-    Point();
+void
+Barrier::arrive()
+{
+    lock_.lock();
+    count_ --;
+    lock_.unlock();
+}
 
-    void
-    initialize() override;
+void
+Barrier::wait()
+{
+    std::size_t count;
 
-    void
-    run() override;
+    do
+    {
+        lock_.lock();
+        count = count_;
+        lock_.unlock();
+    }
+    while (count);
+}
 
-private:
-
-    void
-    processDial();
-
-    void
-    processJoystick();
-
-    void
-    processPushbutton();
-
-    Eigen::Vector3i color_dial_;
-    Eigen::Vector3i color_buttons_;
-    int pixel_index_dial_;
-    int pixel_index_buttons_;
-    bool set_display_frame_;
-};
+void
+Barrier::arriveAndWait()
+{
+    arrive();
+    wait();
+}
 }   // namespace pixel
-
-#endif  // APPLICATION_POINT_H_

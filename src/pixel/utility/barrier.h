@@ -19,57 +19,41 @@
  */
 
 /*
- * launchpad.h
+ * barrier.h
  *
- *  Created on: Nov 30, 2021
+ *  Created on: May 5, 2022
  *      Author: simonyu
  */
 
-#ifndef APPLICATION_LAUNCHPAD_H_
-#define APPLICATION_LAUNCHPAD_H_
+#ifndef UTILITY_BARRIER_H_
+#define UTILITY_BARRIER_H_
 
-#include "application/application.h"
+#include <mutex>
 
 namespace pixel
 {
-class LaunchPad : public Application
+class Barrier
 {
 public:
 
-    LaunchPad();
+    Barrier(const std::size_t& count);
 
     void
-    addApplication(std::shared_ptr<Application> application);
+    arrive();
 
     void
-    addService(std::shared_ptr<Application> service);
+    wait();
 
     void
-    initialize() override;
-
-    void
-    run() override;
+    arriveAndWait();
 
 private:
 
-    void
-    processJoystick();
+    volatile std::size_t count_;
 
-    void
-    processPushbutton();
-
-    std::shared_ptr<Application> application_;
-
-    std::vector<std::shared_ptr<Application>> applications_;
-    std::vector<std::shared_ptr<Application>> services_;
-
-    int application_index_;
-    bool application_initialized_;
-    bool application_launched_;
-    bool timer_started_;
-    unsigned long timer_start_;
-    unsigned long timer_end_;
+    std::mutex mutex_;
+    std::unique_lock<std::mutex> lock_;
 };
 }   // namespace pixel
 
-#endif  // APPLICATION_LAUNCHPAD_H_
+#endif  // UTILITY_BARRIER_H_

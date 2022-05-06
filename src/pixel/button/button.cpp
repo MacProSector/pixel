@@ -31,7 +31,6 @@
 #include "button/button_state.h"
 #include "common/pin.h"
 #include "utility/interrupt.h"
-#include "utility/logger.h"
 
 namespace pixel
 {
@@ -40,9 +39,8 @@ Button::Button()
 }
 
 void
-Button::initialize(std::shared_ptr<Logger> logger)
+Button::initialize()
 {
-    logger_ = logger;
     button_state_ = std::make_shared<ButtonState>();
 
     pinMode(digitalPinToInterrupt(Pin::dial), INPUT);

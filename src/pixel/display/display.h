@@ -36,8 +36,6 @@
 
 namespace pixel
 {
-class Logger;
-
 class Display
 {
 public:
@@ -45,7 +43,7 @@ public:
     Display();
 
     void
-    initialize(std::shared_ptr<Logger> logger);
+    initialize();
 
     bool
     lock();
@@ -72,11 +70,10 @@ private:
 
     Adafruit_NeoPixel neopixel_;
 
-    std::shared_ptr<Logger> logger_;
     std::shared_ptr<std::vector<Eigen::Vector3i>> frame_;
 
-    std::unique_lock<std::mutex> lock_;
     std::mutex mutex_;
+    std::unique_lock<std::mutex> lock_;
 };
 }   // namespace pixel
 

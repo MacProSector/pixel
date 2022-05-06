@@ -33,7 +33,6 @@
 namespace pixel
 {
 class ButtonState;
-class Logger;
 
 class Button
 {
@@ -42,7 +41,7 @@ public:
     Button();
 
     void
-    initialize(std::shared_ptr<Logger> logger);
+    initialize();
 
     std::shared_ptr<ButtonState>
     getButtonState();
@@ -76,7 +75,6 @@ private:
     void
     readDial();
 
-    std::shared_ptr<Logger> logger_;
     std::shared_ptr<ButtonState> button_state_;
 };
 }   // namespace pixel

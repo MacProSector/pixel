@@ -25,6 +25,7 @@
  *      Author: simonyu
  */
 
+#include "common/global.h"
 #include "common/pin.h"
 #include "common/platform.h"
 #include "display/display.h"
@@ -46,10 +47,9 @@ NEO_GRB + NEO_KHZ800), lock_(mutex_, std::defer_lock)
 }
 
 void
-Display::initialize(std::shared_ptr<Logger> logger)
+Display::initialize()
 {
     neopixel_.begin();
-    logger_ = logger;
 
     clear();
     setBrightness(PlatformNeoPixel::brightness_min);

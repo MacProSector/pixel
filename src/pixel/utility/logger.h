@@ -36,7 +36,6 @@
 /*
  *  External headers.
  */
-#include <Arduino.h>
 #include <string>
 
 /*

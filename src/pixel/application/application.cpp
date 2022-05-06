@@ -30,13 +30,8 @@
 
 namespace pixel
 {
-Application::Application(std::shared_ptr<Button> buttons, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger)
+Application::Application()
 {
-    button_ = buttons;
-    display_ = display;
-    logger_ = logger;
-
     display_frame_ = std::make_shared<std::vector<Eigen::Vector3i>>();
     display_frame_splash_ = std::make_shared<std::vector<Eigen::Vector3i>>();
 

@@ -36,8 +36,7 @@ class Restart : public Application
 {
 public:
 
-    Restart(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
-            std::shared_ptr<Logger> logger);
+    Restart();
 
     void
     initialize() override;

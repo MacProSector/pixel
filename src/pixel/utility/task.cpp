@@ -19,56 +19,65 @@
  */
 
 /*
- * interrupt.cpp
+ * task.cpp
  *
- *  Created on: May 4, 2022
+ *  Created on: May 6, 2022
  *      Author: simonyu
  */
 
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+
+#include "application/launchpad.h"
 #include "button/button.h"
 #include "common/global.h"
+#include "display/display.h"
+#include "utility/barrier.h"
+#include "utility/logger.h"
+#include "utility/task.h"
 
 namespace pixel
 {
 void
-joystickUpInterruptHandler()
+taskCore0(void* pvParameters)
 {
-    button_->onJoystickUpChange();
+    barrier_task_->arriveAndWait();
+
+    launchpad_->initialize();
+
+    logTaskStart();
+
+    for (;;)
+    {
+        launchpad_->run();
+        vTaskDelay(10);
+    }
 }
 
 void
-joystickDownInterruptHandler()
+taskCore1(void* pvParameters)
 {
-    button_->onJoystickDownChange();
+    button_->initialize();
+    display_->initialize();
+
+    barrier_task_->arriveAndWait();
+
+    logTaskStart();
+
+    for (;;)
+    {
+        button_->update();
+        vTaskDelay(10);
+    }
 }
 
 void
-joystickLeftInterruptHandler()
+logTaskStart()
 {
-    button_->onJoystickLeftChange();
-}
+    const auto core_index = xPortGetCoreID();
 
-void
-joystickRightInterruptHandler()
-{
-    button_->onJoystickRightChange();
-}
-
-void
-joystickClickInterruptHandler()
-{
-    button_->onJoystickClickChange();
-}
-
-void
-pushbuttonLeftInterruptHandler()
-{
-    button_->onPushbuttonLeftChange();
-}
-
-void
-pushbuttonRightInterruptHandler()
-{
-    button_->onPushbuttonRightChange();
+    logger_->logInfo(
+            "Started task \"" + task_names_[core_index] + "\" on core "
+                    + std::to_string(core_index));
 }
 }   // namespace pixel

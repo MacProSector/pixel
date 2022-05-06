@@ -25,9 +25,20 @@
  *      Author: simonyu
  */
 
+#include "application/launchpad.h"
 #include "common/global.h"
+#include "display/display.h"
+#include "button/button.h"
+#include "utility/barrier.h"
+#include "utility/logger.h"
 
 namespace pixel
 {
+std::shared_ptr<Barrier> barrier_task_;
 std::shared_ptr<Button> button_;
+std::shared_ptr<Display> display_;
+std::shared_ptr<LaunchPad> launchpad_;
+std::shared_ptr<Logger> logger_;
+
+std::vector<std::string> task_names_ = {"Core 0", "Core 1"};
 }   // namespace pixel

@@ -26,14 +26,15 @@
  */
 
 #include "application/brightness.h"
+#include "button/button.h"
 #include "button/button_state.h"
+#include "common/global.h"
 #include "common/platform.h"
+#include "display/display.h"
 
 namespace pixel
 {
-Brightness::Brightness(std::shared_ptr<Button> button, std::shared_ptr<Display> display,
-        std::shared_ptr<Logger> logger) : Application(button, display, logger),
-        color_(PlatformNeoPixel::value_max, PlatformNeoPixel::value_max, 0),
+Brightness::Brightness() : color_(PlatformNeoPixel::value_max, PlatformNeoPixel::value_max, 0),
         brightness_value_(PlatformNeoPixel::brightness_min), initialized_(false)
 {
     // Top horizontal leaves
